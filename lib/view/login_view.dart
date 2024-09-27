@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'home_view.dart';
 import 'sigin_view.dart';
 
 var mainPrimaryColor = Colors.black;
+var secondColor = Colors.white;
 var mainApName = 'RN';
 double? mainFontSize = 14;
 
@@ -13,8 +15,9 @@ class LoginView extends StatefulWidget {
 }
 
 class _LoginViewState extends State<LoginView> {
-  TextEditingController ctrl_email = TextEditingController();
-  TextEditingController ctrl_senha = TextEditingController();
+  TextEditingController _ctrlEmail = TextEditingController();
+  TextEditingController _ctrlSenha = TextEditingController();
+  final _vldtLogin = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -26,24 +29,81 @@ class _LoginViewState extends State<LoginView> {
           body: Column(
             children: [
               Icon(Icons.monetization_on, size: 250),
-              customTextFormField('E-mail', ctrl_email),
-              customTextFormField('Senha', ctrl_senha),
-              ElevatedButton(
-                onPressed: () {
 
-                  bool resultado = validateEmail(ctrl_email.text);
+              // Formulário de validar entrada
+              Form(
+                  key: _vldtLogin,
+                  child: Column(children: [
+                    TextFormField(
+                      controller: _ctrlEmail,
+                      style: TextStyle(fontSize: 24),
+                      decoration: InputDecoration(
+                        labelStyle: TextStyle(color: mainPrimaryColor),
+                        labelText: 'Insira seu e-mail',
+                        fillColor: Colors.white,
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12.0)),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12.0),
+                          borderSide: BorderSide(color: mainPrimaryColor),
+                        ),
+                      ),
+                      // validator => funcaovalida(),
+                      validator: (email) {
+                        // Procedimento para verificar se o e-mail é válido avaliando
+                        // a composição de caracteres
+                        String padraoEmail =
+                            r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$';
+                        RegExp regExp = RegExp(padraoEmail);
 
-                  if ( resultado ){
-                      
-                  }else{
-
-                  }
-
-                },
-                child: Text('Login'),
-              ),
-              SizedBox(),
+                        if (email == null || email.isEmpty) {
+                          return 'Informe seu e-mail';
+                        } else if (!regExp.hasMatch(email)) {
+                          return 'E-mail inválido';
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: 20),
+                    TextFormField(
+                      obscureText: true,
+                      controller: _ctrlSenha,
+                      style: TextStyle(fontSize: 24),
+                      decoration: InputDecoration(
+                        labelStyle: TextStyle(color: mainPrimaryColor),
+                        labelText: 'Insira sua senha',
+                        fillColor: Colors.white,
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12.0)),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12.0),
+                          borderSide: BorderSide(color: mainPrimaryColor),
+                        ),
+                      ),
+                      validator: (password) {
+                        if (password == null || password.isEmpty) {
+                          return 'Informe sua senha';
+                        } else if (password.length > 30) {
+                          return 'Senha inválida';
+                        } else {
+                          return null;
+                        }
+                      },
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        if (_vldtLogin.currentState!.validate()) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => HomeView()),
+                          );
+                        }
+                      },
+                      child: Text('Login'),
+                    )
+                  ])),
               Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text('Não tem conta? '),
                   customGestureDetector(context, 'Cadastre-se', SiginView()),
@@ -53,23 +113,6 @@ class _LoginViewState extends State<LoginView> {
           )),
     );
   }
-}
-
-customTextFormField(text, ctrl) {
-  return TextFormField(
-    controller: ctrl,
-    style: TextStyle(fontSize: 24),
-    decoration: InputDecoration(
-      labelStyle: TextStyle(color: mainPrimaryColor),
-      labelText: text,
-      fillColor: Colors.white,
-      border: OutlineInputBorder(borderRadius: BorderRadius.circular(12.0)),
-      focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(12.0),
-        borderSide: BorderSide(color: mainPrimaryColor),
-      ),
-    ),
-  );
 }
 
 customGestureDetector(context, text, view) {
@@ -87,9 +130,20 @@ customGestureDetector(context, text, view) {
   );
 }
 
-bool validateEmail(String email) {
-  String padraoEmail = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$';
-  RegExp regExp = RegExp(padraoEmail);
-
-  return regExp.hasMatch(email);
+customTextFormField(text, controller, validator_function) {
+  return TextFormField(
+      controller: controller,
+      style: TextStyle(fontSize: 24),
+      decoration: InputDecoration(
+        labelStyle: TextStyle(color: mainPrimaryColor),
+        labelText: 'Insira seu e-mail',
+        fillColor: Colors.white,
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12.0)),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12.0),
+          borderSide: BorderSide(color: mainPrimaryColor),
+        ),
+      ),
+      // validator => funcaovalida(),
+      validator: (value) => validator_function);
 }
