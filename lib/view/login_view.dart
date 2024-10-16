@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
-import 'home_view.dart';
+import 'principal_view.dart';
 import 'sigin_view.dart';
 import 'redefinirSenha_view.dart';
 import 'package:projeto_p1/main.dart';
@@ -207,6 +207,9 @@ class _LoginViewState extends State<LoginView> {
                                 if (usuarios[i].email == email) {
                                   if (usuarios[i].senha == senha) {
                                     estaAutenticado = true;
+
+                                    // Atribui usuário selecionado
+                                    indiceUsuarioSelecionado = i;
                                     break;
                                   }
                                 }
@@ -223,7 +226,7 @@ class _LoginViewState extends State<LoginView> {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => HomeView()),
+                                        builder: (context) => PrincipalView()),
                                   );
                                   // Caso a autenticação falhe, exibe uma mensagem de alerta
                                 } else {
