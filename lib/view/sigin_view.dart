@@ -26,30 +26,30 @@ class _SiginViewState extends State<SiginView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: corPrimaria,
+      backgroundColor: corTerciaria,
       body: Stack(
         children: [
           // Terço superior com fundo preto
           Container(
-            height: MediaQuery.of(context).size.height * 0.10,
-            color: corPrimaria,
+            height: MediaQuery.of(context).size.height * 0.33,
+            color: corTerciaria,
           ),
           // Dois terços inferiores com fundo branco e bordas arredondadas
           Align(
             alignment: Alignment.bottomCenter,
             child: Container(
-              height: MediaQuery.of(context).size.height * 0.90,
+              height: MediaQuery.of(context).size.height * 0.67,
               decoration: BoxDecoration(
                 color: corSecundaria,
                 borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(80),
+                  topLeft: Radius.circular(60),
                 ),
               ),
             ),
           ),
           // Elementos elevados sobre os fundos
           Positioned(
-              top: MediaQuery.of(context).size.height * 0.1,
+              top: MediaQuery.of(context).size.height * 0.025,
               left: 0,
               right: 0,
               child: Padding(
@@ -58,14 +58,13 @@ class _SiginViewState extends State<SiginView> {
                     child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    SizedBox(height: 40),
                     Container(
                         child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         IconButton(
                           icon: Icon(Icons.arrow_back_ios),
-                          color: corPrimaria,
+                          color: corSecundaria,
                           iconSize: 40, // Seta de voltar
                           onPressed: () {
                             Navigator.pop(context); // Retorna à tela anterior
@@ -73,12 +72,13 @@ class _SiginViewState extends State<SiginView> {
                         ),
                       ],
                     )),
+                    SizedBox(height: 20),
                     Text(
                       'Crie uma conta para você!',
                       style: TextStyle(
                         fontSize: 48,
                         fontWeight: FontWeight.bold,
-                        color: corPrimaria,
+                        color: corSecundaria,
                         fontFamily: fonte,
                       ),
                     ),
@@ -88,7 +88,7 @@ class _SiginViewState extends State<SiginView> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text('Já tem uma conta? ',
-                            style: TextStyle(fontFamily: fonte)),
+                            style: TextStyle(fontFamily: fonte, color: corSecundaria)),
                         GestureDetector(
                           onTap: () {
                             Navigator.pop(context);
@@ -98,14 +98,14 @@ class _SiginViewState extends State<SiginView> {
                             style: TextStyle(
                                 fontSize: 14,
                                 fontFamily: fonte,
-                                color: corTerciaria,
+                                color: corPrimaria,
                                 fontWeight: FontWeight.bold,
                                 decoration: TextDecoration.underline),
                           ),
                         ),
                       ],
                     ),
-                    SizedBox(height: 10), // Espaçamento entre o texto e o campo
+                    SizedBox(height: 40), // Espaçamento entre o texto e o campo
                     Form(
                         key: _vlddRegistro,
                         child: Column(children: [
@@ -296,7 +296,8 @@ class _SiginViewState extends State<SiginView> {
                               // Verifica se os dados inseridos são válidos
                               if (_vlddRegistro.currentState!.validate()) {
                                 // Cria um novo usuário
-                                usuarios.add(Usuario(nome, email, senha));
+                                usuarios.add(
+                                    Usuario(nome, email, senha, '', '', '', ''));
 
                                 ScaffoldMessenger.of(context)
                                     .showSnackBar(SnackBar(
@@ -318,7 +319,8 @@ class _SiginViewState extends State<SiginView> {
                               }
                             },
                             style: ElevatedButton.styleFrom(
-                                backgroundColor: corPrimaria, // Cor de fundo preta corSecundaria,
+                                backgroundColor:
+                                    corTerciaria, // Cor de fundo preta corSecundaria,
                                 foregroundColor:
                                     corSecundaria, // Cor do texto branco
                                 shape: RoundedRectangleBorder(

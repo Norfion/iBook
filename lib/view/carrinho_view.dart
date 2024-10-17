@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:projeto_p1/models/livro_m.dart';
 import 'package:projeto_p1/main.dart';
 
 class CarrinhoView extends StatefulWidget {
@@ -39,6 +38,8 @@ class _CarrinhoViewState extends State<CarrinhoView> {
     return Scaffold(
       backgroundColor: corSecundaria,
       appBar: AppBar(
+        // Desativa botão de voltar 
+        automaticallyImplyLeading: false,
         title: Text('Resumo de compras',
             style: TextStyle(
               fontSize: 30,
@@ -86,16 +87,14 @@ class _CarrinhoViewState extends State<CarrinhoView> {
                             ListView.builder(
                           itemCount: compras.livrosAdicionados.length,
                           itemBuilder: (context, index) {
-                            final livro = compras.livrosAdicionados[index];
-                            final subTotal = livro.quantidade *
-                                livro.getPreco(); // Calcula o subtotal
+                            final livro = compras.livrosAdicionados[index]; // Calcula o subtotal
 
                             return Container(
                               margin: EdgeInsets.symmetric(vertical: 8),
-                              padding: EdgeInsets.all(8),
+                              padding: EdgeInsets.all(0),
                               decoration: BoxDecoration(
                                 color: Colors.white,
-                                borderRadius: BorderRadius.circular(8),
+                                borderRadius: BorderRadius.circular(10),
                               ),
                               child: Column(
                                 // Usamos uma coluna para agrupar o conteúdo e o rodapé
@@ -103,11 +102,14 @@ class _CarrinhoViewState extends State<CarrinhoView> {
                                 children: [
                                   Row(
                                     children: [
-                                      Image.asset(
-                                        livro.getUrlCapa(),
-                                        width: 60,
-                                        height: 90,
-                                        fit: BoxFit.cover,
+                                      ClipRRect(
+                                        borderRadius: BorderRadius.circular(10),
+                                        child: Image.asset(
+                                          livro.getUrlCapa(),
+                                          width: 80,
+                                          height: 120,
+                                          fit: BoxFit.cover,
+                                        ),
                                       ),
                                       SizedBox(width: 16),
                                       Expanded(
@@ -126,7 +128,7 @@ class _CarrinhoViewState extends State<CarrinhoView> {
                                             Text(
                                               '${livro.getNomeAutor()}',
                                               style: TextStyle(
-                                                fontSize: 12,
+                                                fontSize: 14,
                                                 color: corPrimaria,
                                               ),
                                             ),
@@ -149,16 +151,16 @@ class _CarrinhoViewState extends State<CarrinhoView> {
                                       SizedBox(width: 8),
                                       // Botão para remover ou decrementar a quantidade
                                       IconButton(
-                                        icon: Icon(Icons.remove_circle,
-                                            color: Colors.red),
+                                        icon: Icon(Icons.remove,
+                                            color: corPrimaria),
                                         onPressed: () {
                                           decrementarQuantidade(index);
                                         },
                                       ),
                                       // Botão para adicionar mais uma unidade
                                       IconButton(
-                                        icon: Icon(Icons.add_circle,
-                                            color: Colors.green),
+                                        icon:
+                                            Icon(Icons.add, color: corPrimaria),
                                         onPressed: () {
                                           incrementarQuantidade(index);
                                         },
@@ -168,20 +170,6 @@ class _CarrinhoViewState extends State<CarrinhoView> {
                                   SizedBox(
                                       height:
                                           8), // Espaçamento entre o conteúdo e o rodapé
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment
-                                        .end, // Alinha o subtotal à direita
-                                    children: [
-                                      Text(
-                                        'Subtotal: R\$ ${subTotal.toStringAsFixed(2)}', // Exibe o subtotal
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                          color: corPrimaria,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
                                 ],
                               ),
                             );

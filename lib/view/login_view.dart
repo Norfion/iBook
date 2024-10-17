@@ -27,13 +27,13 @@ class _LoginViewState extends State<LoginView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: corPrimaria,
+      backgroundColor: corTerciaria,
       body: Stack(
         children: [
           // Terço superior com fundo preto
           Container(
             height: MediaQuery.of(context).size.height * 0.33,
-            color: corPrimaria,
+            color: corTerciaria,
           ),
           // Dois terços inferiores com fundo branco e bordas arredondadas
           Align(
@@ -62,7 +62,7 @@ class _LoginViewState extends State<LoginView> {
                         width: (tamIcone! + 60),
                         height: (tamIcone! + 60),
                         decoration: BoxDecoration(
-                          color: corPrimaria, // Cor de fundo da moldura
+                          color: corTerciaria, // Cor de fundo da moldura
                           border: Border.all(
                             color: corSecundaria, // Cor da borda
                             width: 4, // Largura da borda
@@ -188,7 +188,7 @@ class _LoginViewState extends State<LoginView> {
                                   'Esqueceu a senha?',
                                   style: TextStyle(
                                       fontSize: 14,
-                                      color: corTerciaria,
+                                      color: corPrimaria,
                                       fontFamily: fonte,
                                       fontWeight: FontWeight.bold,
                                       decoration: TextDecoration.underline),
@@ -243,7 +243,7 @@ class _LoginViewState extends State<LoginView> {
                             },
                             style: ElevatedButton.styleFrom(
                                 backgroundColor:
-                                    corPrimaria, // Cor de fundo preta corSecundaria,
+                                    corTerciaria, // Cor de fundo preta corSecundaria,
                                 foregroundColor:
                                     corSecundaria, // Cor do texto branco
                                 shape: RoundedRectangleBorder(
@@ -281,7 +281,7 @@ class _LoginViewState extends State<LoginView> {
                                   style: TextStyle(
                                       fontSize: 14,
                                       fontFamily: fonte,
-                                      color: corTerciaria,
+                                      color: corPrimaria,
                                       fontWeight: FontWeight.bold,
                                       decoration: TextDecoration.underline),
                                 ),

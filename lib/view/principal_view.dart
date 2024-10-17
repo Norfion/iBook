@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:projeto_p1/main.dart';
-import 'package:projeto_p1/models/livro_m.dart';
-import 'package:projeto_p1/main.dart';
 import 'package:projeto_p1/view/livros_view.dart';
-import 'detalhes_view.dart';
 import 'perfil_view.dart';
 import 'carrinho_view.dart';
 

@@ -20,13 +20,13 @@ class _RedefinirsenhaViewState extends State<RedefinirsenhaView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: corPrimaria,
+      backgroundColor: corTerciaria,
       body: Stack(
         children: [
           // Terço superior com fundo preto
           Container(
             height: MediaQuery.of(context).size.height * 0.5,
-            color: corPrimaria,
+            color: corTerciaria,
           ),
           // Dois terços inferiores com fundo branco e bordas arredondadas
           Align(
@@ -160,7 +160,7 @@ class _RedefinirsenhaViewState extends State<RedefinirsenhaView> {
                           },
                           style: ElevatedButton.styleFrom(
                               backgroundColor:
-                                  corPrimaria, // Cor de fundo preta corSecundaria,
+                                  corTerciaria, // Cor de fundo preta corSecundaria,
                               foregroundColor:
                                   corSecundaria, // Cor do texto branco
                               shape: RoundedRectangleBorder(

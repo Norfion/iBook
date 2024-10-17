@@ -1,20 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:device_preview/device_preview.dart';
-import 'package:projeto_p1/view/principal_view.dart';
 import 'view/login_view.dart';
 import 'models/user_model.dart';
 import 'models/livro_m.dart';
 import 'models/carrinho_m.dart';
 
 void main() {
-  runApp(DevicePreview(enabled: true, builder: (context) => const MainApp()) );
+  runApp(DevicePreview(enabled: true, builder: (context) => const MainApp()));
 }
 
 // Variaveis globais
 var fonte = 'Roboto';
 var corPrimaria = Color.fromRGBO(61, 66, 60, 1.0);
-var corSecundaria = Color.fromRGBO(248, 244, 228, 1.0);
-var corTerciaria = Color.fromRGBO(12, 165, 176, 1.0);
+var corSecundaria = Color.fromRGBO(244, 244, 252, 1.0);
+var corTerciaria = Color.fromRGBO(236, 84, 84, 1.0);
 double? espacoEntreCampos = 10;
 int indiceUsuarioSelecionado = 0;
 int indiceLivroSelecionado = 0;
@@ -22,8 +21,16 @@ int qtdLivrosCarrinho = compras.getQtdLivros();
 
 // Cadastros de usuários
 List<Usuario> usuarios = [
-  Usuario('Teste', 'teste@teste.com', '1234'),
-  Usuario('Norman', 'norman@g.com', '12345')
+  Usuario(
+      'Norman',
+      'norman@gmail.com',
+      '12345',
+      'R. Aristides Bernardes Barreto, 1125 - Jardim Marchesi',
+      '21/05/2003',
+      '(16) 98162-6831',
+      'images/perfil/norman_fotoPerfil.jpg'),
+  Usuario('Teste', 'teste@teste.com', '1234', 'R. Teste, 0 - Jardim Teste',
+      '01/02/1990', '(16) 99999-9999', ''),
 ];
 
 // Cadastro de livros
@@ -108,7 +115,7 @@ class _MainAppState extends State<MainApp> {
       debugShowCheckedModeBanner: false,
       initialRoute: '/login',
       routes: {
-        '/login': (context) => PrincipalView(),
+        '/login': (context) => LoginView(),
       },
     );
   }

@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:projeto_p1/main.dart';
 import 'package:projeto_p1/models/livro_m.dart';
-import 'package:projeto_p1/main.dart';
 import 'detalhes_view.dart';
-import 'perfil_view.dart';
 
 class LivrosView extends StatefulWidget {
   const LivrosView({super.key});
@@ -16,16 +14,12 @@ class _LivrosViewState extends State<LivrosView> {
   String generoSelecionado = 'Ficção Científica';
   List<Livro> livrosFiltrados = [];
 
-  // Seta os livros para um gênero inicialmente, para que a tela de livros
-  // não fique em branco aguardadno a interação do usuário
   @override
   void initState() {
     super.initState();
     filtrarLivros(generoSelecionado);
   }
 
-  // Cria a lista de livros filtrados
-  // Será usado no CardLivro
   void filtrarLivros(String genero) {
     setState(() {
       generoSelecionado = genero;
@@ -34,11 +28,9 @@ class _LivrosViewState extends State<LivrosView> {
     });
   }
 
-  // Altera o indice do livro selecionado
-  // Será usado no CardLivro
   void selecionarLivro(int indice) {
     setState(() {
-      indiceLivroSelecionado = indice; // Altera o índice do livro selecionado
+      indiceLivroSelecionado = indice;
     });
   }
 
@@ -57,7 +49,7 @@ class _LivrosViewState extends State<LivrosView> {
               style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
-                color: corTerciaria,
+                color: corPrimaria,
               ),
             ),
             SizedBox(height: 8),
@@ -65,7 +57,7 @@ class _LivrosViewState extends State<LivrosView> {
               'O que vai ler hoje?',
               style: TextStyle(
                 fontSize: 16,
-                color: corPrimaria,
+                color: corTerciaria,
               ),
             ),
             SizedBox(height: 16),
@@ -73,17 +65,15 @@ class _LivrosViewState extends State<LivrosView> {
               decoration: InputDecoration(
                 hintText: 'Pesquise o título do livro',
                 filled: true,
-                fillColor: Color(0xFFE0F7FA),
+                fillColor: corSecundaria.withOpacity(0.2),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8.0),
                   borderSide: BorderSide.none,
                 ),
-                suffixIcon: Icon(Icons.search, color: corPrimaria),
+                suffixIcon: Icon(Icons.search, color: corTerciaria),
               ),
             ),
             SizedBox(height: 16),
-
-            /// Parte da tela que é rolável
             Expanded(
               child: SingleChildScrollView(
                 child: Column(
@@ -94,7 +84,7 @@ class _LivrosViewState extends State<LivrosView> {
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
-                          color: corTerciaria,
+                          color: corPrimaria,
                         ),
                       ),
                       SizedBox(height: 8),
@@ -125,6 +115,15 @@ class _LivrosViewState extends State<LivrosView> {
                         ),
                       ),
                       SizedBox(height: 16),
+                      Text(
+                        '${generoSelecionado}',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: corPrimaria,
+                        ),
+                      ),
+                      SizedBox(height: 16),
                       Container(
                         height: 290,
                         child: ListView(
@@ -142,7 +141,7 @@ class _LivrosViewState extends State<LivrosView> {
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
-                          color: corTerciaria,
+                          color: corPrimaria,
                         ),
                       ),
                       SizedBox(height: 16),
@@ -177,19 +176,19 @@ class CardGenero extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        onGeneroSelecionado(genero); // Executa a função callback ao clicar
+        onGeneroSelecionado(genero);
       },
       child: Container(
         margin: EdgeInsets.only(right: 8),
         padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         decoration: BoxDecoration(
-          color: Color(0xFFE0F7FA),
+          color: corTerciaria.withOpacity(0.2),
           borderRadius: BorderRadius.circular(8),
         ),
         child: Center(
           child: Text(
             genero,
-            style: TextStyle(color: corPrimaria),
+            style: TextStyle(color: corTerciaria),
           ),
         ),
       ),
@@ -207,10 +206,8 @@ class CardLivro extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        // Seta qual livro foi selecionado
         onLivroSelecionado(livros.indexOf(livroConteudo));
 
-        // Abre a página de detalhes
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => DetalhesView()),
@@ -235,13 +232,13 @@ class CardLivro extends StatelessWidget {
             Text(livroConteudo.getTitulo(),
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  color: corTerciaria, // Cor 4
+                  color: corPrimaria,
                 ),
                 textAlign: TextAlign.center),
             Text(
               livroConteudo.getNomeAutor(),
-              style: TextStyle(color: corPrimaria),
-              textAlign: TextAlign.right, // Cor 3
+              style: TextStyle(color: corTerciaria),
+              textAlign: TextAlign.right,
             ),
           ],
         ),

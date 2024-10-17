@@ -1,5 +1,3 @@
-import 'package:projeto_p1/main.dart';
-
 import 'livro_m.dart';
 
 class Carrinho {
