@@ -49,11 +49,11 @@ class _PerfilViewState extends State<PerfilView> {
                 children: [
                   // Avatar ou ícone do perfil
                   ClipRRect(
-                    borderRadius: BorderRadius.circular(10),
+                    borderRadius: BorderRadius.circular(50),
                     child: Image.asset(
                       usuarios[indiceUsuarioSelecionado].urlFotoPerfil_,
-                      width: 40,
-                      height: 53,
+                      width: 160,
+                      height: 160,
                       fit: BoxFit.cover,
                     ),
                   ),

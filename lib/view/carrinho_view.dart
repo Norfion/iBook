@@ -187,7 +187,7 @@ class _CarrinhoViewState extends State<CarrinhoView> {
                               style: TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
-                                color: corTerciaria,
+                                color: corPrimaria,
                               ),
                             ),
                             // Exibe o valor total atualizado
@@ -196,7 +196,7 @@ class _CarrinhoViewState extends State<CarrinhoView> {
                               style: TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
-                                color: corPrimaria,
+                                color: corTerciaria,
                               ),
                             ),
                           ],
