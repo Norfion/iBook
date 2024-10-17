@@ -228,6 +228,7 @@ class _LoginViewState extends State<LoginView> {
                                     MaterialPageRoute(
                                         builder: (context) => PrincipalView()),
                                   );
+                                  
                                   // Caso a autenticação falhe, exibe uma mensagem de alerta
                                 } else {
                                   ScaffoldMessenger.of(context).showSnackBar(
