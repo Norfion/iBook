@@ -13,6 +13,17 @@ class _PerfilViewState extends State<PerfilView> {
   // Variáveis de controle e estilização
   double? tamIcone = 110.0;
 
+  bool eValidaUrlImagem(String palavra, List<String> trechos) {
+    for (int i = 0; i < trechos.length; i++) {
+      if (palavra.contains(trechos[i])) {
+        return true;
+      }
+    }
+
+    print('url da imagem não reconhecida');
+    return false;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,15 +58,38 @@ class _PerfilViewState extends State<PerfilView> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  // Avatar ou ícone do perfil
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(50),
-                    child: Image.asset(
-                      usuarios[indiceUsuarioSelecionado].urlFotoPerfil_,
-                      width: 160,
-                      height: 160,
-                      fit: BoxFit.cover,
-                    ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: (usuarios[indiceUsuarioSelecionado]
+                                .urlFotoPerfil_
+                                .isEmpty ||
+                            !eValidaUrlImagem(
+                                usuarios[indiceUsuarioSelecionado]
+                                    .urlFotoPerfil_,
+                                ['.png', '.jpg', '.jpeg', '.gif', '.bmp']))
+                        ? Container(
+                            width: (tamIcone! + 60),
+                            height: (tamIcone! + 60),
+                            decoration: BoxDecoration(
+                              color: corTerciaria, // Cor de fundo da moldura
+                              border: Border.all(
+                                color: corSecundaria, // Cor da borda
+                                width: 4, // Largura da borda
+                              ),
+                              borderRadius: BorderRadius.circular(
+                                  20), // Define o arredondamento das bordas
+                            ),
+                            child: Icon(Icons.auto_stories,
+                                size: tamIcone, color: corSecundaria))
+                        : ClipRRect(
+                            borderRadius: BorderRadius.circular(50),
+                            child: Image.asset(
+                              usuarios[indiceUsuarioSelecionado].urlFotoPerfil_,
+                              width: 160,
+                              height: 160,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
                   ),
                   SizedBox(height: 30),
 

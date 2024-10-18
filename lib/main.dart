@@ -21,6 +21,8 @@ int qtdLivrosCarrinho = compras.getQtdLivros();
 
 // Cadastros de usuários
 List<Usuario> usuarios = [
+  Usuario('Teste', 'teste@teste.com', '1234', 'R. Teste, 0 - Jardim Teste',
+      '01/02/1990', '(16) 99999-9999', ''),
   Usuario(
       'Norman',
       'norman@gmail.com',
@@ -28,9 +30,7 @@ List<Usuario> usuarios = [
       'R. Aristides Bernardes Barreto, 1125 - Jardim Marchesi',
       '21/05/2003',
       '(16) 98162-6831',
-      'perfil/norman_fotoPerfil.jpg'),
-  Usuario('Teste', 'teste@teste.com', '1234', 'R. Teste, 0 - Jardim Teste',
-      '01/02/1990', '(16) 99999-9999', ''),
+      'perfil/norman_fotoPerfil.jpg')
 ];
 
 // Cadastro de livros
