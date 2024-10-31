@@ -65,7 +65,7 @@ class _PrincipalViewState extends State<PrincipalView> {
                               minHeight: 12,
                             ),
                             child: Text(
-                              '${qtdLivrosCarrinho}',
+                              '${compras.getQtdLivros()}',
                               style: TextStyle(
                                 color: Colors.white,
                                 fontSize: tamFonteTag,
