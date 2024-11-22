@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:projeto_p1/main.dart';
 
@@ -129,33 +130,22 @@ class _RedefinirsenhaViewState extends State<RedefinirsenhaView> {
                         SizedBox(height: 40), // Espaçamento entre os campo
                         ElevatedButton(
                           onPressed: () {
-                            bool existeEmail = false;
                             String email = _ctrlEmail.text;
-
-                            for (int i = 0; i < usuarios.length; i++) {
-                              if (usuarios[i].email == email) {
-                                existeEmail = true;
-                              }
-                            }
 
                             // Verifica se o formato do email é válidp
                             if (_vlddEmail.currentState!.validate()) {
-                              // Verifica se o email está cadastrado
-                              if (existeEmail) {
-                                ScaffoldMessenger.of(context)
-                                    .showSnackBar(SnackBar(
-                                  content: Text(
-                                      'Um e-mail de recuperação de senha foi enviado para "${email}". Verifique sua caixa de entrada'),
-                                  duration: Duration(seconds: 15),
-                                ));
-                              } else {
-                                ScaffoldMessenger.of(context)
-                                    .showSnackBar(SnackBar(
-                                  content: Text(
-                                      'O e-mail inserido não foi encontrado. Tente outro e-mail.'),
-                                  duration: Duration(seconds: 5),
-                                ));
-                              }
+                              // Enviado e-mail
+                              FirebaseAuth.instance.sendPasswordResetEmail(
+                                email: email,
+                              );
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text('E-mail enviado com sucesso!'),
+                                  duration: Duration(seconds: 1),
+                                ),
+                              );
+
+                              Navigator.pop(context);
                             }
                           },
                           style: ElevatedButton.styleFrom(

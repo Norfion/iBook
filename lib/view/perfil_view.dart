@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:projeto_p1/main.dart';
 import 'login_view.dart';
@@ -60,12 +61,8 @@ class _PerfilViewState extends State<PerfilView> {
                 children: [
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                    child: (usuarios[indiceUsuarioSelecionado]
-                                .urlFotoPerfil_
-                                .isEmpty ||
-                            !eValidaUrlImagem(
-                                usuarios[indiceUsuarioSelecionado]
-                                    .urlFotoPerfil_,
+                    child: (usuarioLogado.urlFotoPerfil_.isEmpty ||
+                            !eValidaUrlImagem(usuarioLogado.urlFotoPerfil_,
                                 ['.png', '.jpg', '.jpeg', '.gif', '.bmp']))
                         ? Container(
                             width: (tamIcone! + 60),
@@ -84,7 +81,7 @@ class _PerfilViewState extends State<PerfilView> {
                         : ClipRRect(
                             borderRadius: BorderRadius.circular(50),
                             child: Image.asset(
-                              usuarios[indiceUsuarioSelecionado].urlFotoPerfil_,
+                              usuarioLogado.urlFotoPerfil_,
                               width: 160,
                               height: 160,
                               fit: BoxFit.cover,
@@ -95,7 +92,7 @@ class _PerfilViewState extends State<PerfilView> {
 
                   // Nome do usuário
                   Text(
-                    usuarios[indiceUsuarioSelecionado].nome,
+                    usuarioLogado.nome,
                     style: TextStyle(
                       fontSize: 32,
                       fontWeight: FontWeight.bold,
@@ -104,7 +101,7 @@ class _PerfilViewState extends State<PerfilView> {
                     ),
                   ),
                   Text(
-                    usuarios[indiceUsuarioSelecionado].email,
+                    usuarioLogado.email,
                     style: TextStyle(
                       fontSize: 18,
                       color: corPrimaria,
@@ -133,33 +130,6 @@ class _PerfilViewState extends State<PerfilView> {
                               fontFamily: fonte,
                             ),
                           ),
-                          SizedBox(height: 10),
-                          Text(
-                            'Telefone: ${usuarios[indiceUsuarioSelecionado].telefone}',
-                            style: TextStyle(
-                              fontSize: 16,
-                              color: corPrimaria,
-                              fontFamily: fonte,
-                            ),
-                          ),
-                          SizedBox(height: 5),
-                          Text(
-                            'Endereço: ${usuarios[indiceUsuarioSelecionado].endereco}',
-                            style: TextStyle(
-                              fontSize: 16,
-                              color: corPrimaria,
-                              fontFamily: fonte,
-                            ),
-                          ),
-                          SizedBox(height: 5),
-                          Text(
-                            'Data de Nascimento: ${usuarios[indiceUsuarioSelecionado].dataNascimento}',
-                            style: TextStyle(
-                              fontSize: 16,
-                              color: corPrimaria,
-                              fontFamily: fonte,
-                            ),
-                          ),
                         ],
                       ),
                     ),
@@ -181,6 +151,9 @@ class _PerfilViewState extends State<PerfilView> {
                       Navigator.of(context).pushAndRemoveUntil(
                           MaterialPageRoute(builder: (context) => LoginView()),
                           (Route<dynamic> route) => false);
+
+                      // Desloga do Firebase
+                      FirebaseAuth.instance.signOut();
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: corTerciaria,

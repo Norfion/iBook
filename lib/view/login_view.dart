@@ -1,10 +1,12 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'principal_view.dart';
 import 'sigin_view.dart';
 import 'redefinirSenha_view.dart';
 import 'package:projeto_p1/main.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -23,6 +25,11 @@ class _LoginViewState extends State<LoginView> {
 
   // Variaveis da tela
   double? tamIcone = 110.0;
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -70,8 +77,8 @@ class _LoginViewState extends State<LoginView> {
                           borderRadius: BorderRadius.circular(
                               20), // Define o arredondamento das bordas
                         ),
-                        child:
-                            Icon(Icons.auto_stories, size: tamIcone, color: corSecundaria)),
+                        child: Icon(Icons.auto_stories,
+                            size: tamIcone, color: corSecundaria)),
                     SizedBox(height: 30),
                     Text(
                       'iBOOK',
@@ -201,45 +208,79 @@ class _LoginViewState extends State<LoginView> {
                             onPressed: () {
                               String email = _ctrlEmail.text;
                               String senha = _ctrlSenha.text;
-                              bool estaAutenticado = false;
 
-                              for (int i = 0; i < usuarios.length; i++) {
-                                if (usuarios[i].email == email) {
-                                  if (usuarios[i].senha == senha) {
-                                    estaAutenticado = true;
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => PrincipalView()),
+                              );
 
-                                    // Atribui usuário selecionado
-                                    indiceUsuarioSelecionado = i;
+                              FirebaseAuth.instance
+                                  .signInWithEmailAndPassword(
+                                      email: email.toString(),
+                                      password: senha.toString())
+                                  .then((res) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(
+                                        'Usuário autenticado com sucesso!'),
+                                    duration: Duration(seconds: 1),
+                                  ),
+                                );
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => PrincipalView()),
+                                );
+
+                                FirebaseFirestore.instance
+                                    .collection('usuarios')
+                                    .where('uid',
+                                        isEqualTo: FirebaseAuth
+                                            .instance.currentUser!.uid)
+                                    .get()
+                                    .then((value) {
+                                  usuarioLogado.nome =
+                                      value.docs[0].data()['nome'] ?? '';
+                                });
+                              }).catchError((e) {
+                                switch (e.code) {
+                                  case 'invalid-email':
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(
+                                            'O formato do e-mail é inválido!'),
+                                        duration: Duration(seconds: 1),
+                                      ),
+                                    );
                                     break;
-                                  }
+                                  case 'user-not-found':
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content:
+                                            Text('Usuário não encontrado!'),
+                                        duration: Duration(seconds: 1),
+                                      ),
+                                    );
+                                    break;
+                                  case 'wrong-password':
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(
+                                            'Usuário ou senha incorretos. Tente novamente!'),
+                                        duration: Duration(seconds: 1),
+                                      ),
+                                    );
+                                    break;
+                                  default:
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(e.code.toString()),
+                                        duration: Duration(seconds: 1),
+                                      ),
+                                    );
                                 }
-                              }
-
-                              // Verifica se o formato do email e senha são válidos
-                              if (_vlddLogin.currentState!.validate()) {
-                                // Valida a senha do usuário
-                                if (estaAutenticado) {
-                                  // Limpa as entradas de dados
-                                  _ctrlEmail.clear();
-                                  _ctrlSenha.clear();
-
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => PrincipalView()),
-                                  );
-                                  
-                                  // Caso a autenticação falhe, exibe uma mensagem de alerta
-                                } else {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Text(
-                                          'Usuário ou senha incorretos. Tente novamente!'),
-                                      duration: Duration(seconds: 1),
-                                    ),
-                                  );
-                                }
-                              }
+                              });
                             },
                             style: ElevatedButton.styleFrom(
                                 backgroundColor:

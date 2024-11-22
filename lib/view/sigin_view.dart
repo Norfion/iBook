@@ -1,8 +1,9 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:projeto_p1/models/user_model.dart';
 import 'package:projeto_p1/main.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class SiginView extends StatefulWidget {
   const SiginView({super.key});
@@ -88,7 +89,8 @@ class _SiginViewState extends State<SiginView> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text('Já tem uma conta? ',
-                            style: TextStyle(fontFamily: fonte, color: corSecundaria)),
+                            style: TextStyle(
+                                fontFamily: fonte, color: corSecundaria)),
                         GestureDetector(
                           onTap: () {
                             Navigator.pop(context);
@@ -172,22 +174,10 @@ class _SiginViewState extends State<SiginView> {
                                   r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$';
                               RegExp regExp = RegExp(padraoEmail);
 
-                              bool emailJaCadastrado = false;
-
-                              // Verifica se o e-mail já está sendo usado
-                              for (int i = 0; i < usuarios.length; i++) {
-                                if (usuarios[i].email == email) {
-                                  emailJaCadastrado = true;
-                                  break;
-                                }
-                              }
-
                               if (email == null || email.isEmpty) {
                                 return 'Informe seu e-mail';
                               } else if (!regExp.hasMatch(email)) {
                                 return 'E-mail inválido';
-                              } else if (emailJaCadastrado) {
-                                return 'Este e-mail já está sendo usado!';
                               } else {
                                 return null;
                               }
@@ -295,24 +285,56 @@ class _SiginViewState extends State<SiginView> {
 
                               // Verifica se os dados inseridos são válidos
                               if (_vlddRegistro.currentState!.validate()) {
-                                // Cria um novo usuário
-                                usuarios.add(
-                                    Usuario(nome, email, senha, '', '', '', ''));
-
-                                ScaffoldMessenger.of(context)
-                                    .showSnackBar(SnackBar(
-                                  content: Text(
-                                      'Seu cadastro foi criado com sucesso! Estamos te redirecionando para a página de login... Aguarde'),
-                                  duration: Duration(seconds: 8),
-                                ));
-
-                                // Limpa as entradas de dados
-                                _ctrlNome.clear();
-                                _ctrlEmail.clear();
-                                _ctrlSenha.clear();
-
-                                // Espera um pouco para redirecionar
-                                await Future.delayed(Duration(seconds: 8));
+                                FirebaseAuth.instance
+                                    .createUserWithEmailAndPassword(
+                                        email: email, password: senha)
+                                    .then((res) {
+                                  //Armazenar informações adicionais no Firestore
+                                  FirebaseFirestore.instance
+                                      .collection('usuarios')
+                                      .add({
+                                    "uid": res.user!.uid.toString(),
+                                    "nome": nome,
+                                  });
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content:
+                                          Text('Usuário criado com sucesso!'),
+                                      duration: Duration(seconds: 1),
+                                    ),
+                                  );
+                                  Navigator.pop(context);
+                                }).catchError((e) {
+                                  switch (e.code) {
+                                    case 'email-already-in-use':
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        SnackBar(
+                                          content: Text(
+                                              'O e-mail ${email} já está em uso.'),
+                                          duration: Duration(seconds: 1),
+                                        ),
+                                      );
+                                      break;
+                                    case 'invalid-email':
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        SnackBar(
+                                          content: Text('O e-mail é inválido!'),
+                                          duration: Duration(seconds: 1),
+                                        ),
+                                      );
+                                      break;
+                                    default:
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        SnackBar(
+                                          content: Text(e.code.toString()),
+                                          duration: Duration(seconds: 1),
+                                        ),
+                                      );
+                                  }
+                                });
 
                                 // Volta para a tela de login
                                 Navigator.pop(context);

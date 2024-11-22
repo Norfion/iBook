@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:projeto_p1/main.dart';
 
+import '../controller/livro_controller.dart';
+import '../models/livro_m.dart';
+
 class DetalhesView extends StatefulWidget {
   const DetalhesView({super.key});
 
@@ -9,6 +12,18 @@ class DetalhesView extends StatefulWidget {
 }
 
 class _DetalhesViewState extends State<DetalhesView> {
+  List<Livro> livros = [];
+
+  @override
+  void initState() {
+    super.initState();
+    recuperarLivros();
+  }
+
+  void recuperarLivros() async {
+    livros = await LivroController().getLivros();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

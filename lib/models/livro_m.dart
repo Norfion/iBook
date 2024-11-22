@@ -1,18 +1,16 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class Livro {
   String titulo;
   String nomeAutor;
   List<String> generos;
   int anoPublicacao;
-  String codISBN;
   String sinopse;
   double? preco;
-  double? qtdEstrelas;
   String _urlCapa;
-  int quantidade = 0;
 
   Livro(this.titulo, this.nomeAutor, this.generos, this.anoPublicacao,
-      this.codISBN, this.sinopse, this.preco, this.qtdEstrelas, this._urlCapa);
-
+      this.sinopse, this.preco, this._urlCapa);
 
   String getUrlCapa() {
     return this._urlCapa;
@@ -46,5 +44,24 @@ class Livro {
     if (!generoRepetido) {
       this.generos.add(genero);
     }
+  }
+
+  factory Livro.fromDoc(QueryDocumentSnapshot<Object?> doc) {
+  
+
+    List<String> generos = [];
+    for (String g in doc['generos']) {
+      generos.add(g);
+    }
+
+    return Livro(
+      doc["titulo"] ?? "",
+      doc["autor"] ?? "",
+      generos,
+      doc["ano"] ?? 0,
+      doc["sinopse"] ?? "",
+      doc["preco"] ?? 0,
+      doc["capa"] ?? "",
+    );
   }
 }

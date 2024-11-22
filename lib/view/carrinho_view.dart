@@ -11,26 +11,26 @@ class _CarrinhoViewState extends State<CarrinhoView> {
   void decrementarQuantidade(int index) {
     setState(() {
       final livro = compras.livrosAdicionados[index];
-      if (livro.quantidade > 1) {
-        livro.quantidade -= 1; // Decrementa a quantidade
-      } else {
-        compras.livrosAdicionados
-            .removeAt(index); // Remove o item se a quantidade for 1
-      }
+      // if (livro.quantidade > 1) {
+      //   livro.quantidade -= 1; // Decrementa a quantidade
+      // } else {
+      //   compras.livrosAdicionados
+      //       .removeAt(index); // Remove o item se a quantidade for 1
+      // }
     });
   }
 
   // Função para adicionar uma unidade ao item
   void incrementarQuantidade(int index) {
     setState(() {
-      compras.livrosAdicionados[index].quantidade += 1;
+      // compras.livrosAdicionados[index].quantidade += 1;
     });
   }
 
   // Função para calcular o valor total
   double calcularValorTotal() {
     return compras.livrosAdicionados.fold(
-        0, (total, livro) => total + (livro.getPreco() * livro.quantidade));
+        0, (total, livro) => total + (livro.getPreco() * 1 /*livro.quantidade*/));
   }
 
   @override
@@ -144,10 +144,10 @@ class _CarrinhoViewState extends State<CarrinhoView> {
                                         ),
                                       ),
                                       // Exibe a quantidade ao lado dos botões
-                                      Text(
-                                        '${livro.quantidade} un',
-                                        style: TextStyle(fontSize: 16),
-                                      ),
+                                      // Text(
+                                      //   '${livro.quantidade} un',
+                                      //   style: TextStyle(fontSize: 16),
+                                      // ),
                                       SizedBox(width: 8),
                                       // Botão para remover ou decrementar a quantidade
                                       IconButton(
@@ -209,7 +209,7 @@ class _CarrinhoViewState extends State<CarrinhoView> {
                       Center(
                         child: ElevatedButton.icon(
                           onPressed: () {
-                            compras.addLivro(livros[indiceLivroSelecionado]);
+                            // compras.addLivro(livros[indiceLivroSelecionado]);
 
                             // Exibe uma mensagem de compra efetuada com sucesso
                             showDialog(

@@ -21,11 +21,11 @@ class Carrinho {
 
     if (livroExistente) {
       // Se o livro já estiver no carrinho, apenas incrementa a quantidade
-      livrosAdicionados[indiceDoLivro].quantidade += 1;
+      // livrosAdicionados[indiceDoLivro].quantidade += 1;
     } else {
       // Caso contrário, adiciona o livro ao carrinho com a quantidade inicial de 1
       this.livrosAdicionados.add(livro);
-      livrosAdicionados[livrosAdicionados.length - 1].quantidade = 1;
+      // livrosAdicionados[livrosAdicionados.length - 1].quantidade = 1;
     }
   }
 
@@ -45,7 +45,7 @@ class Carrinho {
     int quantidade = 0;
 
     for (int i = 0; i < livrosAdicionados.length; i++) {
-      quantidade += livrosAdicionados[i].quantidade;
+      // quantidade += livrosAdicionados[i].quantidade;
     }
 
     return quantidade;
