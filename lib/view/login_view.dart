@@ -2,6 +2,7 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import '../controller/funcoes.dart';
 import 'principal_view.dart';
 import 'sigin_view.dart';
 import 'redefinirSenha_view.dart';
@@ -17,8 +18,8 @@ class LoginView extends StatefulWidget {
 
 class _LoginViewState extends State<LoginView> {
   // Controladores de TextFormField()
-  TextEditingController _ctrlSenha = TextEditingController();
-  TextEditingController _ctrlEmail = TextEditingController();
+  final TextEditingController _ctrlSenha = TextEditingController();
+  final TextEditingController _ctrlEmail = TextEditingController();
 
   // Validadores de Form()
   final _vlddLogin = GlobalKey<FormState>();
@@ -206,33 +207,22 @@ class _LoginViewState extends State<LoginView> {
                           SizedBox(height: 10),
                           ElevatedButton(
                             onPressed: () {
-                              String email = _ctrlEmail.text;
-                              String senha = _ctrlSenha.text;
+                              String email = _ctrlEmail.text.toString().trim();
+                              String senha = _ctrlSenha.text.toString().trim();
 
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => PrincipalView()),
-                              );
-
+                              // Autentica o usuário via Firebase Auth
                               FirebaseAuth.instance
                                   .signInWithEmailAndPassword(
-                                      email: email.toString(),
-                                      password: senha.toString())
+                                      email: email, password: senha)
                                   .then((res) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: Text(
-                                        'Usuário autenticado com sucesso!'),
-                                    duration: Duration(seconds: 1),
-                                  ),
-                                );
+                                // Caso esteja autenticado, redireciona para a tela Principal
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) => PrincipalView()),
                                 );
 
+                                // Cria um documento do BD para gravar o nome do usuário
                                 FirebaseFirestore.instance
                                     .collection('usuarios')
                                     .where('uid',
@@ -243,42 +233,38 @@ class _LoginViewState extends State<LoginView> {
                                   usuarioLogado.nome =
                                       value.docs[0].data()['nome'] ?? '';
                                 });
-                              }).catchError((e) {
+                              }).catchError((e)
+                                      // Caso identifique erros, exibe uma mensagem de erro
+                                      {
                                 switch (e.code) {
                                   case 'invalid-email':
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(
-                                        content: Text(
-                                            'O formato do e-mail é inválido!'),
-                                        duration: Duration(seconds: 1),
-                                      ),
-                                    );
+                                    String mensagem;
+                                    (email.isEmpty || email == '')
+                                        ? mensagem = 'Informe um e-mail!'
+                                        : mensagem = 'E-mail inválido.';
+                                    mostrarSnackBar(context, mensagem, 1);
                                     break;
                                   case 'user-not-found':
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(
-                                        content:
-                                            Text('Usuário não encontrado!'),
-                                        duration: Duration(seconds: 1),
-                                      ),
-                                    );
+                                    mostrarSnackBar(
+                                        context,
+                                        'Não existe uma conta para o email $email. Clique em Registre-se para criar uma.',
+                                        1);
                                     break;
                                   case 'wrong-password':
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(
-                                        content: Text(
-                                            'Usuário ou senha incorretos. Tente novamente!'),
-                                        duration: Duration(seconds: 1),
-                                      ),
-                                    );
+                                    mostrarSnackBar(context,
+                                        'E-mail ou senha incorretos!', 1);
+                                    break;
+                                  case 'missing-password':
+                                    mostrarSnackBar(
+                                        context, 'Informe a senha!', 1);
+                                    break;
+                                  case 'invalid-credential':
+                                    mostrarSnackBar(context,
+                                        'E-mail ou senha incorretos!', 1);
                                     break;
                                   default:
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(
-                                        content: Text(e.code.toString()),
-                                        duration: Duration(seconds: 1),
-                                      ),
-                                    );
+                                    mostrarSnackBar(context,
+                                        'Erro: ${e.code.toString()}', 1);
                                 }
                               });
                             },
@@ -338,3 +324,4 @@ class _LoginViewState extends State<LoginView> {
     );
   }
 }
+

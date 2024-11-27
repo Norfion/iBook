@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:projeto_p1/main.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import '../controller/funcoes.dart';
 
 class SiginView extends StatefulWidget {
   const SiginView({super.key});
@@ -17,9 +18,9 @@ class _SiginViewState extends State<SiginView> {
   final double? espacoTitulo = 70;
 
   // Controladores de TextFormField()
-  TextEditingController _ctrlNome = TextEditingController();
-  TextEditingController _ctrlEmail = TextEditingController();
-  TextEditingController _ctrlSenha = TextEditingController();
+  final TextEditingController _ctrlNome = TextEditingController();
+  final TextEditingController _ctrlEmail = TextEditingController();
+  final TextEditingController _ctrlSenha = TextEditingController();
 
   // Validadores de Form()
   final _vlddRegistro = GlobalKey<FormState>();
@@ -59,8 +60,7 @@ class _SiginViewState extends State<SiginView> {
                     child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Container(
-                        child: Row(
+                    Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         IconButton(
@@ -72,7 +72,7 @@ class _SiginViewState extends State<SiginView> {
                           },
                         ),
                       ],
-                    )),
+                    ),
                     SizedBox(height: 20),
                     Text(
                       'Crie uma conta para você!',
@@ -279,9 +279,9 @@ class _SiginViewState extends State<SiginView> {
                           SizedBox(height: espacoEntreCampos),
                           ElevatedButton(
                             onPressed: () async {
-                              String nome = _ctrlNome.text.trim();
-                              String email = _ctrlEmail.text.trim();
-                              String senha = _ctrlSenha.text.trim();
+                              String nome = _ctrlNome.text.toString().trim();
+                              String email = _ctrlEmail.text.toString().trim();
+                              String senha = _ctrlSenha.text.toString().trim();
 
                               // Verifica se os dados inseridos são válidos
                               if (_vlddRegistro.currentState!.validate()) {
@@ -296,48 +296,21 @@ class _SiginViewState extends State<SiginView> {
                                     "uid": res.user!.uid.toString(),
                                     "nome": nome,
                                   });
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content:
-                                          Text('Usuário criado com sucesso!'),
-                                      duration: Duration(seconds: 1),
-                                    ),
-                                  );
+                                  mostrarSnackBar(context,
+                                      'Usuário criado com sucesso!', 2);
+                                  esperarSegundos(5);
                                   Navigator.pop(context);
                                 }).catchError((e) {
                                   switch (e.code) {
                                     case 'email-already-in-use':
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(
-                                        SnackBar(
-                                          content: Text(
-                                              'O e-mail ${email} já está em uso.'),
-                                          duration: Duration(seconds: 1),
-                                        ),
-                                      );
-                                      break;
-                                    case 'invalid-email':
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(
-                                        SnackBar(
-                                          content: Text('O e-mail é inválido!'),
-                                          duration: Duration(seconds: 1),
-                                        ),
-                                      );
+                                      mostrarSnackBar(context,
+                                          'O e-mail $email já está em uso.', 2);
                                       break;
                                     default:
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(
-                                        SnackBar(
-                                          content: Text(e.code.toString()),
-                                          duration: Duration(seconds: 1),
-                                        ),
-                                      );
+                                      mostrarSnackBar(context,
+                                          'Erro: ${e.code.toString()}', 2);
                                   }
                                 });
-
-                                // Volta para a tela de login
-                                Navigator.pop(context);
                               }
                             },
                             style: ElevatedButton.styleFrom(

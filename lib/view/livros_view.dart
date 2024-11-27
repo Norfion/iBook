@@ -1,25 +1,8 @@
-
 import 'package:flutter/material.dart';
 import 'package:projeto_p1/main.dart';
 import 'package:projeto_p1/models/livro_m.dart';
 import '../controller/livro_controller.dart';
 import 'detalhes_view.dart';
-
-// String tituloLivro() {
-//   String titulo;
-
-//   FirebaseFirestore.instance
-//       .collection('livros')
-//       .where('uid', isEqualTo: FirebaseAuth.instance.currentUser!.uid)
-//       .get()
-//       .then((value) {
-//     titulo = value.docs[0].data()['nome'] ?? '';
-//   });
-
-//   return titulo;
-// }
-
-// List<Livro> livros = Livro();
 
 class LivrosView extends StatefulWidget {
   const LivrosView({super.key});
@@ -42,8 +25,8 @@ class _LivrosViewState extends State<LivrosView> {
   void filtrarLivros(String genero) {
     setState(() {
       generoSelecionado = genero;
-       livrosFiltrados =
-           livros.where((livro) => livro.generos.contains(genero)).toList();
+      livrosFiltrados =
+          livros.where((livro) => livro.generos.contains(genero)).toList();
     });
   }
 
@@ -184,9 +167,7 @@ class _LivrosViewState extends State<LivrosView> {
                                   );
                                 }
                                 return const CircularProgressIndicator();
-                              })
-
-                          )
+                              }))
                     ]),
               ),
             )
@@ -237,7 +218,7 @@ class CardLivro extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-       // onLivroSelecionado(livros.indexOf(livroConteudo));
+        // onLivroSelecionado(livros.indexOf(livroConteudo));
 
         Navigator.push(
           context,

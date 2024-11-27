@@ -3,6 +3,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:projeto_p1/main.dart';
+import '../controller/funcoes.dart';
 
 class RedefinirsenhaView extends StatefulWidget {
   const RedefinirsenhaView({super.key});
@@ -13,7 +14,7 @@ class RedefinirsenhaView extends StatefulWidget {
 
 class _RedefinirsenhaViewState extends State<RedefinirsenhaView> {
   // Controladores de TextFormField()
-  TextEditingController _ctrlEmail = TextEditingController();
+  final TextEditingController _ctrlEmail = TextEditingController();
 
   // Validadores de Form()
   final _vlddEmail = GlobalKey<FormState>();
@@ -53,20 +54,19 @@ class _RedefinirsenhaViewState extends State<RedefinirsenhaView> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Container(
-                      child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      IconButton(
-                        icon: Icon(Icons.arrow_back_ios),
-                        color: corSecundaria,
-                        iconSize: 40, // Seta de voltar
-                        onPressed: () {
-                          Navigator.pop(context); // Retorna à tela anterior
-                        },
-                      ),
-                    ],
-                  )),
+                  Row(
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      children: [
+                  IconButton(
+                    icon: Icon(Icons.arrow_back_ios),
+                    color: corSecundaria,
+                    iconSize: 40, // Seta de voltar
+                    onPressed: () {
+                      Navigator.pop(context); // Retorna à tela anterior
+                    },
+                  ),
+                                      ],
+                                    ),
                   SizedBox(height: 150),
                   Text(
                     'Esqueceu sua senha?',
@@ -138,12 +138,7 @@ class _RedefinirsenhaViewState extends State<RedefinirsenhaView> {
                               FirebaseAuth.instance.sendPasswordResetEmail(
                                 email: email,
                               );
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text('E-mail enviado com sucesso!'),
-                                  duration: Duration(seconds: 1),
-                                ),
-                              );
+                              mostrarSnackBar(context, 'E-mail enviado com sucesso!', 2);
 
                               Navigator.pop(context);
                             }
