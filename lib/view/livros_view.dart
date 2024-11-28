@@ -1,8 +1,14 @@
+import 'dart:math';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:projeto_p1/main.dart';
 import 'package:projeto_p1/models/livro_m.dart';
 import '../controller/livro_controller.dart';
 import 'detalhes_view.dart';
+import '../controller/funcoes.dart';
+
+
 
 class LivrosView extends StatefulWidget {
   const LivrosView({super.key});
@@ -12,14 +18,41 @@ class LivrosView extends StatefulWidget {
 }
 
 class _LivrosViewState extends State<LivrosView> {
-  String generoSelecionado = 'Ficção Científica';
+  String generoSelecionado = '';
   List<Livro> livrosFiltrados = [];
   List<Livro> livros = [];
+  List<String> generos = [
+    'Romance',
+    'Juvenil',
+    'Ficção Científica',
+    'Comédia',
+    'Fantasia',
+    'Autoajuda'
+  ];
+  late String idSelecionado;
 
   @override
   void initState() {
     super.initState();
-    filtrarLivros(generoSelecionado);
+    carregarLivros();
+  }
+
+  Future<void> carregarLivros() async {
+    try {
+      // Chama o método getLivros e atribui o retorno à variável livros
+      List<Livro> livrosCarregados = await LivroController().getLivros();
+      setState(() {
+        livros = livrosCarregados;
+
+        final random = Random();
+        int indiceAleatorio = random
+            .nextInt(generos.length + 1);
+
+        filtrarLivros(generos[indiceAleatorio]);
+      });
+    } catch (error) {
+      print("Erro ao carregar livros: $error");
+    }
   }
 
   void filtrarLivros(String genero) {
@@ -30,9 +63,13 @@ class _LivrosViewState extends State<LivrosView> {
     });
   }
 
-  void selecionarLivro(int indice) {
+  void selecionarLivro(String idSelecionado) {
     setState(() {
-      indiceLivroSelecionado = indice;
+      for (int i = 0; i < livros.length; i++) {
+        if (livros[i].id == idSelecionado) {
+          livroSelecionado = livros[i];
+        }
+      }
     });
   }
 
@@ -149,25 +186,14 @@ class _LivrosViewState extends State<LivrosView> {
                       SizedBox(height: 16),
                       Container(
                           height: 290,
-                          child: FutureBuilder(
-                              future: LivroController().getLivros(),
-                              builder: (context, snapshot) {
-                                if (snapshot.connectionState ==
-                                    ConnectionState.done) {
-                                  livros = snapshot.requireData;
-
-                                  return ListView(
-                                    scrollDirection: Axis.horizontal,
-                                    children: livros
-                                        .map((livro) => CardLivro(
-                                            livroConteudo: livro,
-                                            onLivroSelecionado:
-                                                selecionarLivro))
-                                        .toList(),
-                                  );
-                                }
-                                return const CircularProgressIndicator();
-                              }))
+                          child: ListView(
+                            scrollDirection: Axis.horizontal,
+                            children: livros
+                                .map((livro) => CardLivro(
+                                    livroConteudo: livro,
+                                    onLivroSelecionado: selecionarLivro))
+                                .toList(),
+                          ))
                     ]),
               ),
             )
@@ -210,7 +236,7 @@ class CardGenero extends StatelessWidget {
 
 class CardLivro extends StatelessWidget {
   Livro livroConteudo;
-  final Function(int) onLivroSelecionado;
+  final Function(String) onLivroSelecionado;
 
   CardLivro({required this.livroConteudo, required this.onLivroSelecionado});
 
@@ -218,8 +244,7 @@ class CardLivro extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        // onLivroSelecionado(livros.indexOf(livroConteudo));
-
+        onLivroSelecionado(livroConteudo.id);
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => DetalhesView()),

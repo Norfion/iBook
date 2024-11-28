@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Livro {
+  String id;
   String titulo;
   String nomeAutor;
   List<String> generos;
@@ -9,7 +10,7 @@ class Livro {
   double? preco;
   String _urlCapa;
 
-  Livro(this.titulo, this.nomeAutor, this.generos, this.anoPublicacao,
+  Livro(this.id, this.titulo, this.nomeAutor, this.generos, this.anoPublicacao,
       this.sinopse, this.preco, this._urlCapa);
 
   String getUrlCapa() {
@@ -55,6 +56,7 @@ class Livro {
     }
 
     return Livro(
+      doc.id,
       doc["titulo"] ?? "",
       doc["autor"] ?? "",
       generos,

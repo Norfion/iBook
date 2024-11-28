@@ -142,9 +142,7 @@ class _PerfilViewState extends State<PerfilView> {
                       // Apaga os dados antes de sair
 
                       setState(() {
-                        compras.livrosAdicionados
-                            .clear(); // Remove todos os itens da lista
-                        qtdLivrosCarrinho = 0;
+                        // *** implementar limpar o carrinho
                       });
 
                       // Remove todas as telas da pilha até voltar a tela de login

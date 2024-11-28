@@ -1,53 +1,78 @@
+import 'package:projeto_p1/models/item.dart';
+
 import 'livro_m.dart';
 
 class Carrinho {
-  List<Livro> livrosAdicionados;
-  double valorTotal = 0.0;
+  List<Item> itens;
 
-  Carrinho(this.livrosAdicionados);
+  Carrinho(this.itens);
 
   addLivro(Livro livro) {
     // Verifica se o livro já está no carrinho
     bool livroExistente = false;
-    int indiceDoLivro = 0;
+    late int indiceItem;
 
-    for (int i = 0; i < livrosAdicionados.length; i++) {
-      if (livrosAdicionados[i].titulo == livro.titulo) {
+    for (int i = 0; i < itens.length; i++) {
+      if (itens[i].livro.id == livro.id) {
         livroExistente = true;
-        indiceDoLivro = i;
+        indiceItem = i;
         break;
       }
     }
 
     if (livroExistente) {
       // Se o livro já estiver no carrinho, apenas incrementa a quantidade
-      // livrosAdicionados[indiceDoLivro].quantidade += 1;
+      itens[indiceItem].quantidade += 1;
     } else {
-      // Caso contrário, adiciona o livro ao carrinho com a quantidade inicial de 1
-      this.livrosAdicionados.add(livro);
-      // livrosAdicionados[livrosAdicionados.length - 1].quantidade = 1;
+      // Caso contrário, adiciona o item ao carrinho com a quantidade inicial de 1
+      Item novoItem = Item(livro, 1);
+      itens.add(novoItem);
     }
   }
 
-  getValorTotal() {
+  removerLivro(Livro livro) {
+    // Verifica se o livro já está no carrinho
+    bool livroExistente = false;
+    late int indiceItem;
+
+    for (int i = 0; i < itens.length; i++) {
+      if (itens[i].livro.id == livro.id) {
+        livroExistente = true;
+        indiceItem = i;
+        break;
+      }
+    }
+
+    if (livroExistente) {
+      // Se o livro já estiver no carrinho, apenas incrementa a quantidade
+      itens[indiceItem].quantidade -= 1;
+    } else {
+      // Caso contrário, remove o item do carrinho
+      itens.removeAt(indiceItem);
+    }
+  }
+
+
+  double getValorTotal() {
     double total = 0.0;
 
-    for (int i = 0; i < livrosAdicionados.length; i++) {
-      total += livrosAdicionados[i].preco ?? 0.0;
+    for (int i = 0; i < itens.length; i++) {
+      total += itens[i].getSubTotal();
     }
-
-    this.valorTotal = total;
-
-    return valorTotal;
+    return total;
   }
 
-  getQtdLivros() {
-    int quantidade = 0;
+  int getQtdItens() {
+    return itens.length;
+  }
 
-    for (int i = 0; i < livrosAdicionados.length; i++) {
-      // quantidade += livrosAdicionados[i].quantidade;
+  int getQtdLivros(){
+    int qtdLivros = 0;
+
+    for(int i = 0; i < itens.length; i++){
+      qtdLivros += itens[i].getQuantidade();
     }
 
-    return quantidade;
+    return qtdLivros;
   }
 }

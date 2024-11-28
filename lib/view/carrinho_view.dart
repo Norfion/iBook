@@ -7,31 +7,6 @@ class CarrinhoView extends StatefulWidget {
 }
 
 class _CarrinhoViewState extends State<CarrinhoView> {
-  // Função para remover ou decrementar a quantidade do item
-  void decrementarQuantidade(int index) {
-    setState(() {
-      final livro = compras.livrosAdicionados[index];
-      // if (livro.quantidade > 1) {
-      //   livro.quantidade -= 1; // Decrementa a quantidade
-      // } else {
-      //   compras.livrosAdicionados
-      //       .removeAt(index); // Remove o item se a quantidade for 1
-      // }
-    });
-  }
-
-  // Função para adicionar uma unidade ao item
-  void incrementarQuantidade(int index) {
-    setState(() {
-      // compras.livrosAdicionados[index].quantidade += 1;
-    });
-  }
-
-  // Função para calcular o valor total
-  double calcularValorTotal() {
-    return compras.livrosAdicionados.fold(
-        0, (total, livro) => total + (livro.getPreco() * 1 /*livro.quantidade*/));
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -85,9 +60,9 @@ class _CarrinhoViewState extends State<CarrinhoView> {
                         child:
                             // Lista de livros comprados
                             ListView.builder(
-                          itemCount: compras.livrosAdicionados.length,
+                          itemCount: compras.getQtdItens(),
                           itemBuilder: (context, index) {
-                            final livro = compras.livrosAdicionados[index]; // Calcula o subtotal
+                            final livro = compras.itens[index].livro; // Calcula o subtotal
 
                             return Container(
                               margin: EdgeInsets.symmetric(vertical: 8),
@@ -154,7 +129,7 @@ class _CarrinhoViewState extends State<CarrinhoView> {
                                         icon: Icon(Icons.remove,
                                             color: corPrimaria),
                                         onPressed: () {
-                                          decrementarQuantidade(index);
+                                          compras.removerLivro(livro);
                                         },
                                       ),
                                       // Botão para adicionar mais uma unidade
@@ -162,7 +137,7 @@ class _CarrinhoViewState extends State<CarrinhoView> {
                                         icon:
                                             Icon(Icons.add, color: corPrimaria),
                                         onPressed: () {
-                                          incrementarQuantidade(index);
+                                          compras.addLivro(livro);
                                         },
                                       ),
                                     ],
@@ -192,7 +167,7 @@ class _CarrinhoViewState extends State<CarrinhoView> {
                             ),
                             // Exibe o valor total atualizado
                             Text(
-                              'R\$ ${calcularValorTotal().toStringAsFixed(2)}',
+                              'R\$ ${compras.getValorTotal().toStringAsFixed(2)}',
                               style: TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
@@ -234,8 +209,6 @@ class _CarrinhoViewState extends State<CarrinhoView> {
 
                             // Limpa o carrinho após finalizar a compra
                             setState(() {
-                              compras.livrosAdicionados
-                                  .clear(); // Remove todos os itens da lista
                               qtdLivrosCarrinho = 0;
                             });
                           },

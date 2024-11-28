@@ -30,6 +30,7 @@ int qtdLivrosCarrinho = compras.getQtdLivros();
 
 // Salva na memória qual usuário está logado
 Usuario usuarioLogado = Usuario('', '', '');
+late Livro livroSelecionado;
 
 // Carrinho de compras
 

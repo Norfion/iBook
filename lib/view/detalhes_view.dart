@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:projeto_p1/main.dart';
 
-import '../controller/livro_controller.dart';
-import '../models/livro_m.dart';
-
 class DetalhesView extends StatefulWidget {
   const DetalhesView({super.key});
 
@@ -12,17 +9,13 @@ class DetalhesView extends StatefulWidget {
 }
 
 class _DetalhesViewState extends State<DetalhesView> {
-  List<Livro> livros = [];
 
   @override
   void initState() {
     super.initState();
-    recuperarLivros();
   }
 
-  void recuperarLivros() async {
-    livros = await LivroController().getLivros();
-  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +37,7 @@ class _DetalhesViewState extends State<DetalhesView> {
 
             // Título
             Text(
-              livros[indiceLivroSelecionado].titulo,
+              livroSelecionado.titulo,
               style: TextStyle(
                 fontSize: 28,
                 fontWeight: FontWeight.bold,
@@ -55,7 +48,7 @@ class _DetalhesViewState extends State<DetalhesView> {
 
             // Autor
             Text(
-              livros[indiceLivroSelecionado].nomeAutor,
+              livroSelecionado.nomeAutor,
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
@@ -69,13 +62,13 @@ class _DetalhesViewState extends State<DetalhesView> {
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // Imagem da capa do livros[indiceLivroSelecionado]
+                      // Imagem da capa do livroSelecionado
                       Center(
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(5),
                           child: Image.asset(
-                            livros[indiceLivroSelecionado]
-                                .getUrlCapa(), // Caminho da imagem do livros[indiceLivroSelecionado]
+                            livroSelecionado
+                                .getUrlCapa(), // Caminho da imagem do livroSelecionado
                             width: 200,
                             height: 340,
                             fit: BoxFit.cover,
@@ -86,7 +79,7 @@ class _DetalhesViewState extends State<DetalhesView> {
 
                       // Preço
                       Text(
-                        'R\$ ${livros[indiceLivroSelecionado].preco!.toStringAsFixed(2)}', // Exibe o preço formatado
+                        'R\$ ${livroSelecionado.preco!.toStringAsFixed(2)}', // Exibe o preço formatado
                         style: TextStyle(
                           fontSize: 40,
                           fontWeight: FontWeight.w600,
@@ -106,7 +99,7 @@ class _DetalhesViewState extends State<DetalhesView> {
                       ),
                       SizedBox(height: 10),
                       Text(
-                        livros[indiceLivroSelecionado].sinopse,
+                        livroSelecionado.sinopse,
                         textAlign: TextAlign.justify,
                         style: TextStyle(
                           fontSize: 16,
@@ -119,7 +112,7 @@ class _DetalhesViewState extends State<DetalhesView> {
                       Center(
                         child: ElevatedButton.icon(
                           onPressed: () {
-                            compras.addLivro(livros[indiceLivroSelecionado]);
+                            compras.addLivro(livroSelecionado);
 
                             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                               content: Text('Livro adicionado ao seu carrinho'),
