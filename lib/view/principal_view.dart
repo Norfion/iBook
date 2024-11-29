@@ -17,14 +17,27 @@ class _PrincipalViewState extends State<PrincipalView> {
   int qtdLivros = 0;
 
   // Lista de telas
-  final List<Widget> _telas = [
-    LivrosView(),
-    CarrinhoView(),
-    PerfilView(),
-  ];
+  final List<Widget> _telas = [];
+
+  @override
+  void initState() {
+    super.initState();
+    
+    // Inicializar a lista de telas depois de chamar o setState.
+    _telas.addAll([
+      LivrosView(),
+      CarrinhoView(
+        onCarrinhoUpdated: (newQtdLivros) {
+          setState(() {
+            qtdLivros = newQtdLivros;
+          });
+        },
+      ),
+      PerfilView(),
+    ]);
+  }
 
   // Atualiza o índice
-  // Será usado no Rodapé
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
@@ -48,68 +61,46 @@ class _PrincipalViewState extends State<PrincipalView> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Icon(Icons.shopping_cart, color: corPrimaria),
-                Container(
-                  child: compras.getQtdLivros() == 0
-                      ? null
-                      : Positioned(
-                          right: 0,
-                          left: 15,
-                          child: Container(
-                            padding: EdgeInsets.all(2),
-                            decoration: BoxDecoration(
-                              color: Colors.red,
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            constraints: BoxConstraints(
-                              minWidth: 12,
-                              minHeight: 12,
-                            ),
-                            child: Text(
-                              '${compras.getQtdLivros()}',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: tamFonteTag,
-                                fontWeight: FontWeight.bold,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                        ),
-                ),
+                  Container(
+                    padding: EdgeInsets.all(2),
+                    decoration: BoxDecoration(
+                      color: Colors.red,
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    constraints: BoxConstraints(minWidth: 12, minHeight: 12),
+                    child: Text(
+                      '${compras.getQtdLivros()}',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: tamFonteTag,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
               ],
             ),
             activeIcon: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Icon(Icons.shopping_cart, color: corTerciaria),
-                Container(
-                  child: compras.getQtdLivros() == 0
-                      ? null
-                      : Positioned(
-                          right: 0,
-                          left: 15,
-                          child: Container(
-                            padding: EdgeInsets.all(2),
-                            decoration: BoxDecoration(
-                              color: Colors.red,
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            constraints: BoxConstraints(
-                              minWidth: 12,
-                              minHeight: 12,
-                            ),
-                            child: Text(
-                              '${compras.getQtdLivros()}',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: tamFonteTag,
-                                fontWeight: FontWeight.bold,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                        ),
-                ),
+                  Container(
+                    padding: EdgeInsets.all(2),
+                    decoration: BoxDecoration(
+                      color: Colors.red,
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    constraints: BoxConstraints(minWidth: 12, minHeight: 12),
+                    child: Text(
+                      '${compras.getQtdLivros()}',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: tamFonteTag,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
               ],
             ),
             label: 'Carrinho',

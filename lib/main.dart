@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:device_preview/device_preview.dart';
+import 'package:projeto_p1/controller/livro_controller.dart';
 import 'package:projeto_p1/firebase_options.dart';
-
 // Tela de login
 import 'view/login_view.dart';
 
@@ -34,7 +34,7 @@ late Livro livroSelecionado;
 
 // Carrinho de compras
 
-Carrinho compras = Carrinho([]);
+Carrinho compras = Carrinho('', []);
 
 class MainApp extends StatefulWidget {
   const MainApp({super.key});
@@ -44,6 +44,7 @@ class MainApp extends StatefulWidget {
 }
 
 class _MainAppState extends State<MainApp> {
+  
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

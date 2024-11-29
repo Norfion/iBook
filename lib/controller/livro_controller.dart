@@ -19,4 +19,28 @@ class LivroController {
 
     return lista;
   }
+
+  Future<String> buscarIdLivroPorId(String idLivro) async {
+    try {
+      // Referência à coleção 'livros'
+      CollectionReference livrosRef =
+          FirebaseFirestore.instance.collection('livros');
+
+      // Consulta para verificar se existe um documento onde o campo 'id' é igual ao parâmetro passado
+      QuerySnapshot querySnapshot =
+          await livrosRef.where('id', isEqualTo: idLivro).get();
+
+      // Verifica se algum documento foi encontrado
+      if (querySnapshot.docs.isNotEmpty) {
+        // Retorna o 'id' do primeiro documento encontrado
+        return querySnapshot.docs.first.id;
+      } else {
+        // Caso não encontre, retorna uma string vazia ou algum valor padrão
+        return '';
+      }
+    } catch (e) {
+      print("Erro ao buscar livro: $e");
+      return ''; // Retorna uma string vazia em caso de erro
+    }
+  }
 }
