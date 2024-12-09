@@ -3,18 +3,18 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:projeto_p1/controladores/usuarioControlador.dart';
 import 'package:projeto_p1/main.dart';
-import '../controladores/livroControlador.dart';
-import '../modelos/livro.dart';
-import 'detalhesTela.dart';
+import '../../controladores/livroControlador.dart';
+import '../../modelos/livro.dart';
+import '../detalhesTela.dart';
 
-class LivrosView extends StatefulWidget {
-  const LivrosView({super.key});
+class BibliotecaTela extends StatefulWidget {
+  const BibliotecaTela({super.key});
 
   @override
-  State<LivrosView> createState() => _LivrosViewState();
+  State<BibliotecaTela> createState() => _BibliotecaTelaState();
 }
 
-class _LivrosViewState extends State<LivrosView> {
+class _BibliotecaTelaState extends State<BibliotecaTela> {
   late Livro livroSelecionado;
   String nomeUsuario = '';
 
@@ -29,7 +29,6 @@ class _LivrosViewState extends State<LivrosView> {
     'Fantasia',
     'Autoajuda'
   ];
-  bool carregando = true; // Estado para exibir carregamento
 
   @override
   void initState() {
@@ -48,13 +47,9 @@ class _LivrosViewState extends State<LivrosView> {
           int indiceAleatorio = random.nextInt(generos.length);
           filtrarLivros(generos[indiceAleatorio]);
         }
-        carregando = false;
       });
     } catch (error) {
       print("Erro ao carregar livros: $error");
-      setState(() {
-        carregando = false;
-      });
     }
   }
 
@@ -86,7 +81,7 @@ class _LivrosViewState extends State<LivrosView> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => DetalhesView(livro: livroSelecionado),
+        builder: (context) => DetalhesTela(livro: livroSelecionado),
       ),
     );
   }
@@ -146,6 +141,7 @@ class _LivrosViewState extends State<LivrosView> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    const SizedBox(height: 16),
                     Text(
                       'Gêneros',
                       style: TextStyle(
@@ -154,6 +150,7 @@ class _LivrosViewState extends State<LivrosView> {
                         color: corPrimaria,
                       ),
                     ),
+                    const SizedBox(height: 16),
                     SizedBox(
                       height: 50,
                       child: ListView(

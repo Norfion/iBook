@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import '../modelos/livro.dart';
 import 'package:projeto_p1/main.dart';
 
-class DetalhesView extends StatelessWidget {
+class DetalhesTela extends StatelessWidget {
   final Livro livro;
 
-  const DetalhesView({super.key, required this.livro});
+  const DetalhesTela({super.key, required this.livro});
 
   @override
   Widget build(BuildContext context) {

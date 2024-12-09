@@ -3,7 +3,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:projeto_p1/main.dart';
-import '../utilitarios/funcoes.dart';
+import '../../utilitarios/funcoes.dart';
 
 class RedefinirsenhaView extends StatefulWidget {
   const RedefinirsenhaView({super.key});

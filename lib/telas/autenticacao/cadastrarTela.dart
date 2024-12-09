@@ -4,16 +4,16 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:projeto_p1/main.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import '../utilitarios/funcoes.dart';
+import '../../utilitarios/funcoes.dart';
 
-class SiginView extends StatefulWidget {
-  const SiginView({super.key});
+class CadastrarTela extends StatefulWidget {
+  const CadastrarTela({super.key});
 
   @override
-  State<SiginView> createState() => _SiginViewState();
+  State<CadastrarTela> createState() => _CadastrarTelaState();
 }
 
-class _SiginViewState extends State<SiginView> {
+class _CadastrarTelaState extends State<CadastrarTela> {
   // Configurações da tela
   final double? espacoTitulo = 70;
 

@@ -5,7 +5,7 @@ import 'package:device_preview/device_preview.dart';
 import 'package:projeto_p1/firebase_options.dart';
 
 // Tela de login
-import 'telas/entrarTela.dart';
+import 'telas/autenticacao/entrarTela.dart';
 
 // Modelos e Controladores
 import './modelos/livro.dart';

@@ -1,9 +1,8 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, use_build_context_synchronously
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import '../utilitarios/funcoes.dart';
-import 'principalTela.dart';
+import '../../utilitarios/funcoes.dart';
+import '../principalTela.dart';
 import 'cadastrarTela.dart';
 import 'redefinirsenhaTela.dart';
 import 'package:projeto_p1/main.dart';
@@ -288,7 +287,7 @@ class _EntrarTelaState extends State<EntrarTela> {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => SiginView()),
+                                        builder: (context) => CadastrarTela()),
                                   );
                                 },
                                 child: Text(

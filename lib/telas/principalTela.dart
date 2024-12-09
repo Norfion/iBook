@@ -1,13 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:projeto_p1/main.dart';
-import 'package:projeto_p1/telas/bibliotecaTela.dart';
+import 'package:projeto_p1/telas/principal/bibliotecaTela.dart';
 import '../controladores/pedidoControlador.dart';
 import '../controladores/usuarioControlador.dart';
 import '../modelos/pedido.dart';
 import '../modelos/usuario.dart';
-import 'perfilTela.dart';
-import 'carrinhoTela.dart';
+import 'principal/perfilTela.dart';
+import 'principal/carrinhoTela.dart';
 
 Usuario usuario = Usuario(nome: '', email: '');
 
@@ -32,19 +32,19 @@ class _PrincipalTelaState extends State<PrincipalTela> {
     super.initState();
 
     carregarPedido(FirebaseAuth.instance.currentUser!.uid);
-    carregarUsuario(FirebaseAuth.instance.currentUser!.uid.toString());
+    carregarUsuario(FirebaseAuth.instance.currentUser!.uid);
     // Após carregar os dados, inicialize as telas
     setState(() {
       _telas = [
-        LivrosView(),
-        CarrinhoView(
+        const BibliotecaTela(),
+        CarrinhoTela(
           onCarrinhoUpdated: (newQtdLivros) {
             setState(() {
               qtdLivros = newQtdLivros;
             });
           },
         ),
-        PerfilView(),
+        const PerfilTela(),
       ];
       carregando = false;
     });

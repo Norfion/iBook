@@ -1,22 +1,20 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:projeto_p1/main.dart';
-import '../controladores/usuarioControlador.dart';
-import 'entrarTela.dart';
-import '../modelos/usuario.dart';
-import 'package:projeto_p1/main.dart';
+import '../../controladores/usuarioControlador.dart';
+import '../autenticacao/entrarTela.dart';
+import '../../modelos/usuario.dart';
 
 
-class PerfilView extends StatefulWidget {
-  const PerfilView({super.key});
+class PerfilTela extends StatefulWidget {
+  const PerfilTela({super.key});
 
   @override
-  State<PerfilView> createState() => _PerfilViewState();
+  State<PerfilTela> createState() => _PerfilTelaState();
 }
 
-class _PerfilViewState extends State<PerfilView> {
+class _PerfilTelaState extends State<PerfilTela> {
   double? tamIcone = 110.0;
-  bool carregando = true; // Flag para indicar carregamento
 
   @override
   void initState() {
@@ -30,12 +28,10 @@ class _PerfilViewState extends State<PerfilView> {
           await UsuarioControlador().getUsuario(uidUsuario);
       setState(() {
         usuario = usuarioCarregado;
-        carregando = false; // Carregamento finalizado
       });
     } catch (error) {
       print("Erro ao carregar usuário: $error");
       setState(() {
-        carregando = false; // Mesmo em caso de erro, encerra carregamento
       });
     }
   }
@@ -52,14 +48,6 @@ class _PerfilViewState extends State<PerfilView> {
 
   @override
   Widget build(BuildContext context) {
-    if (carregando) {
-      // Exibe carregador enquanto os dados estão sendo carregados
-      return const Scaffold(
-        backgroundColor: Colors.white,
-        body: Center(child: CircularProgressIndicator()),
-      );
-    }
-
     if (usuario == null) {
       // Mensagem para o caso de o usuário não ser encontrado
       return const Scaffold(
@@ -150,31 +138,31 @@ class _PerfilViewState extends State<PerfilView> {
                       fontFamily: fonte,
                     ),
                   ),
-                  const SizedBox(height: 24),
-                  Card(
-                    color: corTerciaria.withOpacity(0.3),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Informações Pessoais',
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                              color: corPrimaria,
-                              fontFamily: fonte,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 60),
+                  // const SizedBox(height: 24),
+                  // Card(
+                  //   color: corTerciaria.withOpacity(0.3),
+                  //   shape: RoundedRectangleBorder(
+                  //     borderRadius: BorderRadius.circular(10),
+                  //   ),
+                  //   child: Padding(
+                  //     padding: const EdgeInsets.all(16.0),
+                  //     child: Column(
+                  //       crossAxisAlignment: CrossAxisAlignment.start,
+                  //       children: [
+                  //         Text(
+                  //           'Informações Pessoais',
+                  //           style: TextStyle(
+                  //             fontSize: 20,
+                  //             fontWeight: FontWeight.bold,
+                  //             color: corPrimaria,
+                  //             fontFamily: fonte,
+                  //           ),
+                  //         ),
+                  //       ],
+                  //     ),
+                  //   ),
+                  // ),
+                  const SizedBox(height: 250),
                   ElevatedButton(
                     onPressed: () {
                       FirebaseAuth.instance.signOut();
