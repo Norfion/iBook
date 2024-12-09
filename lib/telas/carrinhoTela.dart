@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:projeto_p1/main.dart';
 
 class CarrinhoView extends StatefulWidget {
-  final Function(int) onCarrinhoUpdated;  // Callback para atualizar a quantidade
+  final Function(int) onCarrinhoUpdated; // Callback para atualizar a quantidade
 
-  CarrinhoView({required this.onCarrinhoUpdated});
+  const CarrinhoView({super.key, required this.onCarrinhoUpdated});
 
   @override
+  // ignore: library_private_types_in_public_api
   _CarrinhoViewState createState() => _CarrinhoViewState();
 }
 
@@ -30,7 +31,7 @@ class _CarrinhoViewState extends State<CarrinhoView> {
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
-        child: compras.getQtdLivros() == 0
+        child: pedido!.getQuantidade() == 0
             ? Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -60,12 +61,12 @@ class _CarrinhoViewState extends State<CarrinhoView> {
                 children: [
                   Expanded(
                     child: ListView.builder(
-                      itemCount: compras.getQtdItens(),
+                      itemCount: pedido!.getQuantidade(),
                       itemBuilder: (context, index) {
-                        final livro = compras.itens[index].livro;
+                        final livro = pedido!.itens[index].livro;
                         return Container(
-                          margin: EdgeInsets.symmetric(vertical: 8),
-                          padding: EdgeInsets.all(0),
+                          margin: const EdgeInsets.symmetric(vertical: 8),
+                          padding: const EdgeInsets.all(0),
                           decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(10),
@@ -78,20 +79,20 @@ class _CarrinhoViewState extends State<CarrinhoView> {
                                   ClipRRect(
                                     borderRadius: BorderRadius.circular(10),
                                     child: Image.asset(
-                                      livro.getUrlCapa(),
+                                      livro.urlCapa,
                                       width: 80,
                                       height: 120,
                                       fit: BoxFit.cover,
                                     ),
                                   ),
-                                  SizedBox(width: 16),
+                                  const SizedBox(width: 16),
                                   Expanded(
                                     child: Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          livro.getTitulo(),
+                                          livro.titulo,
                                           style: TextStyle(
                                             fontSize: 16,
                                             fontWeight: FontWeight.bold,
@@ -99,15 +100,15 @@ class _CarrinhoViewState extends State<CarrinhoView> {
                                           ),
                                         ),
                                         Text(
-                                          '${livro.getNomeAutor()}',
+                                          livro.nomeAutor,
                                           style: TextStyle(
                                             fontSize: 14,
                                             color: corPrimaria,
                                           ),
                                         ),
-                                        SizedBox(height: 10),
+                                        const SizedBox(height: 10),
                                         Text(
-                                          'R\$ ${livro.getPreco().toStringAsFixed(2)} / un',
+                                          'R\$ ${livro.preco.toStringAsFixed(2)} / un',
                                           style: TextStyle(
                                             fontSize: 14,
                                             color: corPrimaria,
@@ -116,19 +117,20 @@ class _CarrinhoViewState extends State<CarrinhoView> {
                                       ],
                                     ),
                                   ),
-                                  SizedBox(width: 8),
+                                  const SizedBox(width: 8),
                                   IconButton(
                                     icon:
                                         Icon(Icons.remove, color: corPrimaria),
                                     onPressed: () {
                                       setState(() {
-                                        compras.removerLivro(livro);
-                                        widget.onCarrinhoUpdated(compras.getQtdLivros());
+                                        //compras.removerLivro(livro);
+                                        widget.onCarrinhoUpdated(
+                                            pedido!.getQuantidade());
                                       });
                                     },
                                   ),
                                   Text(
-                                    '${compras.itens[index].quantidade}',
+                                    '${pedido!.itens[index].quantidade}',
                                     style: TextStyle(
                                       fontSize: 18,
                                       color: corPrimaria,
@@ -138,21 +140,22 @@ class _CarrinhoViewState extends State<CarrinhoView> {
                                     icon: Icon(Icons.add, color: corPrimaria),
                                     onPressed: () {
                                       setState(() {
-                                        compras.addLivro(livro);
-                                        widget.onCarrinhoUpdated(compras.getQtdLivros());
+                                        //compras.addLivro(livro);
+                                        widget.onCarrinhoUpdated(
+                                            pedido!.getQuantidade());
                                       });
                                     },
                                   ),
                                 ],
                               ),
-                              SizedBox(height: 8),
+                              const SizedBox(height: 8),
                             ],
                           ),
                         );
                       },
                     ),
                   ),
-                  Divider(),
+                  const Divider(),
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 16.0),
                     child: Row(
@@ -167,7 +170,7 @@ class _CarrinhoViewState extends State<CarrinhoView> {
                           ),
                         ),
                         Text(
-                          'R\$ ${compras.getValorTotal().toStringAsFixed(2)}',
+                          'R\$ ${pedido!.getValorTotal().toStringAsFixed(2)}',
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
@@ -177,8 +180,8 @@ class _CarrinhoViewState extends State<CarrinhoView> {
                       ],
                     ),
                   ),
-                  Divider(),
-                  SizedBox(height: 20),
+                  const Divider(),
+                  const SizedBox(height: 20),
                   Center(
                     child: ElevatedButton.icon(
                       onPressed: () {
@@ -186,15 +189,15 @@ class _CarrinhoViewState extends State<CarrinhoView> {
                           context: context,
                           builder: (BuildContext context) {
                             return AlertDialog(
-                              title: Text('Pedido finalizado'),
-                              content: Text(
+                              title: const Text('Pedido finalizado'),
+                              content: const Text(
                                   'Sua compra foi finalizada com sucesso! Agradecemos a preferência\n\nEm breve lhe enviaremos um e-mail com os detalhes do seu pedido'),
                               actions: <Widget>[
                                 TextButton(
                                   onPressed: () {
                                     Navigator.of(context).pop();
                                   },
-                                  child: Text('OK'),
+                                  child: const Text('OK'),
                                 ),
                               ],
                             );
@@ -202,30 +205,30 @@ class _CarrinhoViewState extends State<CarrinhoView> {
                         );
 
                         setState(() {
-                          for(int i = compras.itens.length -1; i >= 0; i--){
-                            compras.itens.removeAt(i);
+                          for (int i = pedido!.itens.length - 1; i >= 0; i--) {
+                            //compras.itens.removeAt(i);
                           }
                         });
                       },
-                      label: Text('Finalizar compra'),
+                      label: const Text('Finalizar compra'),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: corPrimaria,
                         foregroundColor: corSecundaria,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8),
                         ),
-                        padding: EdgeInsets.symmetric(
+                        padding: const EdgeInsets.symmetric(
                           vertical: 16.0,
                           horizontal: 32.0,
                         ),
-                        textStyle: TextStyle(
+                        textStyle: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.w600,
                         ),
                       ),
                     ),
                   ),
-                  SizedBox(height: 30),
+                  const SizedBox(height: 30),
                 ],
               ),
       ),

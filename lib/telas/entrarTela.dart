@@ -1,22 +1,22 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, use_build_context_synchronously
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import '../controller/funcoes.dart';
-import 'principal_view.dart';
-import 'sigin_view.dart';
-import 'redefinirSenha_view.dart';
+import '../utilitarios/funcoes.dart';
+import 'principalTela.dart';
+import 'cadastrarTela.dart';
+import 'redefinirsenhaTela.dart';
 import 'package:projeto_p1/main.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-class LoginView extends StatefulWidget {
-  const LoginView({super.key});
+class EntrarTela extends StatefulWidget {
+  const EntrarTela({super.key});
 
   @override
-  State<LoginView> createState() => _LoginViewState();
+  State<EntrarTela> createState() => _EntrarTelaState();
 }
 
-class _LoginViewState extends State<LoginView> {
+class _EntrarTelaState extends State<EntrarTela> {
   // Controladores de TextFormField()
   final TextEditingController _ctrlSenha = TextEditingController();
   final TextEditingController _ctrlEmail = TextEditingController();
@@ -214,25 +214,13 @@ class _LoginViewState extends State<LoginView> {
                               FirebaseAuth.instance
                                   .signInWithEmailAndPassword(
                                       email: email, password: senha)
-                                  .then((res) {
+                                  .then((res) async {
                                 // Caso esteja autenticado, redireciona para a tela Principal
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => PrincipalView()),
+                                      builder: (context) => PrincipalTela()),
                                 );
-
-                                // Cria um documento do BD para gravar o nome do usuário
-                                FirebaseFirestore.instance
-                                    .collection('usuarios')
-                                    .where('uid',
-                                        isEqualTo: FirebaseAuth
-                                            .instance.currentUser!.uid)
-                                    .get()
-                                    .then((value) {
-                                  usuarioLogado.nome =
-                                      value.docs[0].data()['nome'] ?? '';
-                                });
                               }).catchError((e)
                                       // Caso identifique erros, exibe uma mensagem de erro
                                       {
@@ -324,4 +312,3 @@ class _LoginViewState extends State<LoginView> {
     );
   }
 }
-

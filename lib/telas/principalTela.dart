@@ -1,40 +1,78 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:projeto_p1/main.dart';
-import 'package:projeto_p1/view/livros_view.dart';
-import 'perfil_view.dart';
-import 'carrinho_view.dart';
+import 'package:projeto_p1/telas/bibliotecaTela.dart';
+import '../controladores/pedidoControlador.dart';
+import '../controladores/usuarioControlador.dart';
+import '../modelos/pedido.dart';
+import '../modelos/usuario.dart';
+import 'perfilTela.dart';
+import 'carrinhoTela.dart';
 
-class PrincipalView extends StatefulWidget {
-  const PrincipalView({super.key});
+Usuario usuario = Usuario(nome: '', email: '');
+
+class PrincipalTela extends StatefulWidget {
+  const PrincipalTela({super.key});
 
   @override
-  State<PrincipalView> createState() => _PrincipalViewState();
+  State<PrincipalTela> createState() => _PrincipalTelaState();
 }
 
-class _PrincipalViewState extends State<PrincipalView> {
+class _PrincipalTelaState extends State<PrincipalTela> {
   double tamFonteTag = 14;
   int _selectedIndex = 0;
   int qtdLivros = 0;
+  bool carregando = true;
 
   // Lista de telas
-  final List<Widget> _telas = [];
+  late List<Widget> _telas;
 
   @override
   void initState() {
     super.initState();
-    
-    // Inicializar a lista de telas depois de chamar o setState.
-    _telas.addAll([
-      LivrosView(),
-      CarrinhoView(
-        onCarrinhoUpdated: (newQtdLivros) {
-          setState(() {
-            qtdLivros = newQtdLivros;
-          });
-        },
-      ),
-      PerfilView(),
-    ]);
+
+    carregarPedido(FirebaseAuth.instance.currentUser!.uid);
+    carregarUsuario(FirebaseAuth.instance.currentUser!.uid.toString());
+    // Após carregar os dados, inicialize as telas
+    setState(() {
+      _telas = [
+        LivrosView(),
+        CarrinhoView(
+          onCarrinhoUpdated: (newQtdLivros) {
+            setState(() {
+              qtdLivros = newQtdLivros;
+            });
+          },
+        ),
+        PerfilView(),
+      ];
+      carregando = false;
+    });
+  }
+
+  Future<void> carregarPedido(String uidUsuario) async {
+    try {
+      Pedido? pedidoCarregado = await PedidoControlador().getPedido(uidUsuario);
+      setState(() {
+        pedido = pedidoCarregado;
+      });
+    } catch (error) {
+      print("Erro ao carregar pedido: $error");
+    }
+  }
+
+  Future<void> carregarUsuario(String uidUsuario) async {
+    try {
+      Usuario? usuarioCarregado = await UsuarioControlador()
+          .getUsuario(FirebaseAuth.instance.currentUser!.uid.toString());
+      if (usuarioCarregado != null) {
+        setState(() {
+          usuario = usuarioCarregado;
+        });
+      }
+    } catch (error) {
+      print("Erro ao carregar usuário: $error");
+    }
   }
 
   // Atualiza o índice
@@ -48,7 +86,9 @@ class _PrincipalViewState extends State<PrincipalView> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: corSecundaria,
-      body: _telas[_selectedIndex],
+      body: carregando
+          ? const Center(child: CircularProgressIndicator())
+          : _telas[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
         items: [
           BottomNavigationBarItem(
@@ -61,15 +101,17 @@ class _PrincipalViewState extends State<PrincipalView> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Icon(Icons.shopping_cart, color: corPrimaria),
+                if (pedido != null)
                   Container(
-                    padding: EdgeInsets.all(2),
+                    padding: const EdgeInsets.all(2),
                     decoration: BoxDecoration(
                       color: Colors.red,
                       borderRadius: BorderRadius.circular(8),
                     ),
-                    constraints: BoxConstraints(minWidth: 12, minHeight: 12),
+                    constraints:
+                        const BoxConstraints(minWidth: 12, minHeight: 12),
                     child: Text(
-                      '${compras.getQtdLivros()}',
+                      '${pedido!.getQuantidade()}',
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: tamFonteTag,
@@ -84,15 +126,17 @@ class _PrincipalViewState extends State<PrincipalView> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Icon(Icons.shopping_cart, color: corTerciaria),
+                if (pedido != null)
                   Container(
-                    padding: EdgeInsets.all(2),
+                    padding: const EdgeInsets.all(2),
                     decoration: BoxDecoration(
                       color: Colors.red,
                       borderRadius: BorderRadius.circular(8),
                     ),
-                    constraints: BoxConstraints(minWidth: 12, minHeight: 12),
+                    constraints:
+                        const BoxConstraints(minWidth: 12, minHeight: 12),
                     child: Text(
-                      '${compras.getQtdLivros()}',
+                      '${pedido!.getQuantidade()}',
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: tamFonteTag,

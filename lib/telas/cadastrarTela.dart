@@ -4,7 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:projeto_p1/main.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import '../controller/funcoes.dart';
+import '../utilitarios/funcoes.dart';
 
 class SiginView extends StatefulWidget {
   const SiginView({super.key});
@@ -289,6 +289,7 @@ class _SiginViewState extends State<SiginView> {
                                     .createUserWithEmailAndPassword(
                                         email: email, password: senha)
                                     .then((res) {
+                                      
                                   //Armazenar informações adicionais no Firestore
                                   FirebaseFirestore.instance
                                       .collection('usuarios')
