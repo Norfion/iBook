@@ -41,3 +41,28 @@ class Livro {
     );
   }
 }
+
+extension LivroExtensions on Livro {
+  // Converte o objeto Livro em um Map para salvar no Firestore
+  Map<String, dynamic> toMap() {
+    return {
+      'titulo': titulo,
+      'autor': nomeAutor,
+      'generos': generos,
+      'ano': anoPublicacao,
+      'sinopse': sinopse,
+      'capa': urlCapa,
+      'preco': preco,
+    };
+  }
+
+  // Método estático para salvar o Livro no Firestore
+  static Future<void> adicionarLivro(Livro livro) async {
+    try {
+      await FirebaseFirestore.instance.collection('livros').add(livro.toMap());
+      print('Livro adicionado com sucesso!');
+    } catch (e) {
+      print('Erro ao adicionar livro: $e');
+    }
+  }
+}

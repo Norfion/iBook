@@ -36,6 +36,7 @@ class _BibliotecaTelaState extends State<BibliotecaTela> {
   @override
   void initState() {
     super.initState();
+    // adicionarLivros();
     carregarLivros();
     carregarNomeUsuario(FirebaseAuth.instance.currentUser!.uid);
 
@@ -47,6 +48,25 @@ class _BibliotecaTelaState extends State<BibliotecaTela> {
       print('Quantidade: ${pedido!.itens[i].quantidade}');
     }
   }
+
+
+  // Adicionar novos livros
+  // void adicionarLivros() async {
+  //   List<Livro> livrosNovos = [Livro(
+  //         id: '', // O Firestore vai gerar automaticamente
+  //         titulo: 'Diário de um banan',
+  //         nomeAutor: 'Jeff Kinney',
+  //         generos: ['Comédia', 'Juvenil'],
+  //         anoPublicacao: 2008,
+  //         sinopse:
+  //             'Não é fácil ser criança. E ninguém sabe disso melhor do que Greg Heffley, que se vê mergulhado no mundo do ensino fundamental, onde fracotes são obrigados a dividir os corredores com garotos mais altos, mais malvados e que já se barbeiam. Em Diário de um Banana, o autor e ilustrados Jeff Kinney nos apresenta um herói improvável. Como Greg diz em seu diário. Só não espere que seja todo Querido Diário isso, Querido Diário aquilo. Para nossa sorte, o que Greg Heffley diz que fará e o que ele realmente faz são duas coisas bem diferentes.',
+  //         urlCapa: 'assets/capas/diario-de-um-banana.jpg',
+  //         preco: 59.35)];
+
+  //   for (int i = 0; i < livrosNovos.length; i++) {
+  //     await LivroExtensions.adicionarLivro(livrosNovos[i]);
+  //   }
+  // }
 
   Future<void> carregarLivros() async {
     try {
