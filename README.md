@@ -1,3 +1,3 @@
-# projeto_p1
+# iBook
 
-A new Flutter project.
+Um aplicativo de compra de livros
