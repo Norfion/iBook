@@ -3,9 +3,11 @@ import 'item.dart';
 import '../controladores/itemControlador.dart';
 
 class Pedido {
+  String id;
   List<Item> itens;
+  String uidUsuario;
 
-  Pedido({required this.itens});
+  Pedido({required this.id, required this.itens, required this.uidUsuario});
 
   double getValorTotal() {
     double total = 0.0;
@@ -40,7 +42,10 @@ class Pedido {
         }
       }
 
-      return Pedido(itens: itens);
+      return Pedido(
+          id: documento.id,
+          itens: itens,
+          uidUsuario: documento['uidUsuario'] ?? '');
     } catch (error) {
       print('Erro ao criar pedido: $error');
       return null;

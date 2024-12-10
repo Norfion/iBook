@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Livro {
-  String idLivro;
+  String id;
   String titulo;
   String nomeAutor;
   List<String> generos;
@@ -11,7 +11,7 @@ class Livro {
   double preco;
 
   Livro(
-      {required this.idLivro,
+      {required this.id,
       required this.titulo,
       required this.nomeAutor,
       required this.generos,
@@ -30,7 +30,7 @@ class Livro {
     }
 
     return Livro(
-      idLivro: documento.id,
+      id: documento.id,
       titulo: documento["titulo"] ?? "",
       nomeAutor: documento["autor"] ?? "",
       generos: generos,

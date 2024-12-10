@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:projeto_p1/main.dart';
@@ -9,7 +11,10 @@ import '../modelos/usuario.dart';
 import 'principal/perfilTela.dart';
 import 'principal/carrinhoTela.dart';
 
-Usuario usuario = Usuario(nome: '', email: '');
+// Variaveis globais
+Pedido? pedido;
+Usuario? usuario;
+int qtdLivros = pedido!.getQuantidade();
 
 class PrincipalTela extends StatefulWidget {
   const PrincipalTela({super.key});
@@ -21,29 +26,28 @@ class PrincipalTela extends StatefulWidget {
 class _PrincipalTelaState extends State<PrincipalTela> {
   double tamFonteTag = 14;
   int _selectedIndex = 0;
-  int qtdLivros = 0;
   bool carregando = true;
 
+
   // Lista de telas
-  late List<Widget> _telas;
+  late List<Widget> telas;
 
   @override
   void initState() {
     super.initState();
+    carregarDados();
+  }
 
-    carregarPedido(FirebaseAuth.instance.currentUser!.uid);
-    carregarUsuario(FirebaseAuth.instance.currentUser!.uid);
-    // Após carregar os dados, inicialize as telas
+  Future<void> carregarDados() async {
+    final currentUser = FirebaseAuth.instance.currentUser;
+    if (currentUser != null) {
+      await carregarUsuario(currentUser.uid);
+      await carregarPedido(currentUser.uid);
+    }
     setState(() {
-      _telas = [
+      telas = [
         const BibliotecaTela(),
-        CarrinhoTela(
-          onCarrinhoUpdated: (newQtdLivros) {
-            setState(() {
-              qtdLivros = newQtdLivros;
-            });
-          },
-        ),
+        const Carrinhotela(),
         const PerfilTela(),
       ];
       carregando = false;
@@ -51,6 +55,7 @@ class _PrincipalTelaState extends State<PrincipalTela> {
   }
 
   Future<void> carregarPedido(String uidUsuario) async {
+    await carregarUsuario(uidUsuario);
     try {
       Pedido? pedidoCarregado = await PedidoControlador().getPedido(uidUsuario);
       setState(() {
@@ -88,7 +93,7 @@ class _PrincipalTelaState extends State<PrincipalTela> {
       backgroundColor: corSecundaria,
       body: carregando
           ? const Center(child: CircularProgressIndicator())
-          : _telas[_selectedIndex],
+          : telas[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
         items: [
           BottomNavigationBarItem(
@@ -111,7 +116,7 @@ class _PrincipalTelaState extends State<PrincipalTela> {
                     constraints:
                         const BoxConstraints(minWidth: 12, minHeight: 12),
                     child: Text(
-                      '${pedido!.getQuantidade()}',
+                      '$qtdLivros',
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: tamFonteTag,
@@ -136,7 +141,7 @@ class _PrincipalTelaState extends State<PrincipalTela> {
                     constraints:
                         const BoxConstraints(minWidth: 12, minHeight: 12),
                     child: Text(
-                      '${pedido!.getQuantidade()}',
+                      '$qtdLivros',
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: tamFonteTag,

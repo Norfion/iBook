@@ -1,6 +1,11 @@
+// ignore_for_file: avoid_print
+
 import 'package:flutter/material.dart';
+import 'package:projeto_p1/controladores/pedidoControlador.dart';
 import '../modelos/livro.dart';
 import 'package:projeto_p1/main.dart';
+import '../utilitarios/funcoes.dart';
+import './principalTela.dart';
 
 class DetalhesTela extends StatelessWidget {
   final Livro livro;
@@ -70,10 +75,41 @@ class DetalhesTela extends StatelessWidget {
                                 textAlign: TextAlign.justify,
                                 style: TextStyle(color: corPrimaria),
                               ),
-                              const SizedBox(height: 8),
+                              const SizedBox(height: 16),
                               Center(
                                 child: ElevatedButton(
-                                  onPressed: () {},
+                                  onPressed: () async {
+                                    try {
+                                      // Chama o método para adicionar o livro ao pedido
+                                      await PedidoControlador()
+                                          .addLivroPedido(livro.id, pedido!);
+
+                                      // Atualiza o pedido com os dados mais recentes do Firestore
+                                      pedido = await PedidoControlador()
+                                          .getPedido(pedido!.uidUsuario);
+
+                                      // Exibe os itens do pedido atualizado (para testes)
+                                      print(
+                                          'Livros do pedido DEPOIS de adicionar: ');
+                                      for (int i = 0;
+                                          i < pedido!.itens.length;
+                                          i++) {
+                                        print(
+                                            'ID Item: ${pedido!.itens[i].id}');
+                                        print(
+                                            'Título: ${pedido!.itens[i].livro.titulo}');
+                                        print(
+                                            'Quantidade: ${pedido!.itens[i].quantidade}');
+                                      }
+                                    } catch (error) {
+                                      print(
+                                          "Erro ao adicionar livro ao carrinho: $error");
+                                    }
+
+                                    // ignore: use_build_context_synchronously
+                                    mostrarSnackBar(context,
+                                        'Livro adicionado ao carrinho', 2);
+                                  },
                                   style: ElevatedButton.styleFrom(
                                       backgroundColor:
                                           corTerciaria, // Cor de fundo preta corSecundaria,
@@ -91,7 +127,8 @@ class DetalhesTela extends StatelessWidget {
                                           fontSize: 18,
                                           fontFamily: fonte)),
                                 ),
-                              )
+                              ),
+                              const SizedBox(height: 10)
                             ])))),
           ],
         ),

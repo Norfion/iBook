@@ -1,10 +1,12 @@
+// ignore_for_file: avoid_print
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:projeto_p1/main.dart';
 import '../../controladores/usuarioControlador.dart';
 import '../autenticacao/entrarTela.dart';
 import '../../modelos/usuario.dart';
-
+import '../principalTela.dart';
 
 class PerfilTela extends StatefulWidget {
   const PerfilTela({super.key});
@@ -31,8 +33,7 @@ class _PerfilTelaState extends State<PerfilTela> {
       });
     } catch (error) {
       print("Erro ao carregar usuário: $error");
-      setState(() {
-      });
+      setState(() {});
     }
   }
 
@@ -138,34 +139,13 @@ class _PerfilTelaState extends State<PerfilTela> {
                       fontFamily: fonte,
                     ),
                   ),
-                  // const SizedBox(height: 24),
-                  // Card(
-                  //   color: corTerciaria.withOpacity(0.3),
-                  //   shape: RoundedRectangleBorder(
-                  //     borderRadius: BorderRadius.circular(10),
-                  //   ),
-                  //   child: Padding(
-                  //     padding: const EdgeInsets.all(16.0),
-                  //     child: Column(
-                  //       crossAxisAlignment: CrossAxisAlignment.start,
-                  //       children: [
-                  //         Text(
-                  //           'Informações Pessoais',
-                  //           style: TextStyle(
-                  //             fontSize: 20,
-                  //             fontWeight: FontWeight.bold,
-                  //             color: corPrimaria,
-                  //             fontFamily: fonte,
-                  //           ),
-                  //         ),
-                  //       ],
-                  //     ),
-                  //   ),
-                  // ),
                   const SizedBox(height: 250),
                   ElevatedButton(
                     onPressed: () {
+                      // Faz logout e apaga os dados
                       FirebaseAuth.instance.signOut();
+                      pedido = null;
+                      usuario = null;
                       Navigator.of(context).pushAndRemoveUntil(
                         MaterialPageRoute(
                             builder: (context) => const EntrarTela()),

@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'dart:math';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -6,6 +8,7 @@ import 'package:projeto_p1/main.dart';
 import '../../controladores/livroControlador.dart';
 import '../../modelos/livro.dart';
 import '../detalhesTela.dart';
+import '../principalTela.dart';
 
 class BibliotecaTela extends StatefulWidget {
   const BibliotecaTela({super.key});
@@ -35,6 +38,14 @@ class _BibliotecaTelaState extends State<BibliotecaTela> {
     super.initState();
     carregarLivros();
     carregarNomeUsuario(FirebaseAuth.instance.currentUser!.uid);
+
+    // ## Exibe os itens do pedido atualizado (para testes)
+    print('Livros do pedido ANTES de adicionar: ');
+    for (int i = 0; i < pedido!.itens.length; i++) {
+      print('ID Item: ${pedido!.itens[i].id}');
+      print('Título: ${pedido!.itens[i].livro.titulo}');
+      print('Quantidade: ${pedido!.itens[i].quantidade}');
+    }
   }
 
   Future<void> carregarLivros() async {
@@ -141,7 +152,7 @@ class _BibliotecaTelaState extends State<BibliotecaTela> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const SizedBox(height: 16),
+                    const SizedBox(height: 8),
                     Text(
                       'Gêneros',
                       style: TextStyle(
@@ -282,7 +293,6 @@ class CardLivro extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         onLivroSelecionado(livroConteudo);
-        livroSelecionado = livroConteudo;
       },
       child: Container(
         width: 150,
