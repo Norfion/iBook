@@ -105,6 +105,7 @@ class PedidoControlador {
         QuerySnapshot pedidoSnapshot = await firestore
             .collection('pedidos')
             .where('uidUsuario', isEqualTo: pedido.uidUsuario)
+            .where('situacao', isEqualTo: 'Andamento')
             .limit(1)
             .get();
 
@@ -179,7 +180,7 @@ class PedidoControlador {
     }
   }
 
-  Future<void> apagarPedido(Pedido pedido) async {
+  Future<void> finalizarPedido(Pedido pedido) async {
     try {
       // Referência ao documento na coleção "pedidos"
       DocumentReference documento =
