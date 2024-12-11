@@ -35,23 +35,6 @@ class DetalhesTela extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               const SizedBox(height: 20),
-                              Text(
-                                livro.titulo,
-                                style: TextStyle(
-                                  fontSize: 28,
-                                  fontWeight: FontWeight.bold,
-                                  color: corPrimaria,
-                                ),
-                              ),
-                              const SizedBox(height: 8),
-                              Text(
-                                livro.nomeAutor,
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  color: corPrimaria.withOpacity(0.8),
-                                ),
-                              ),
-                              const SizedBox(height: 16),
                               Center(
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(10),
@@ -65,10 +48,41 @@ class DetalhesTela extends StatelessWidget {
                               ),
                               const SizedBox(height: 16),
                               Text(
-                                'Sinopse:',
-                                style:
-                                    TextStyle(fontSize: 22, color: corPrimaria),
+                                livro.titulo,
+                                style: TextStyle(
+                                  fontSize: 28,
+                                  fontWeight: FontWeight.bold,
+                                  color: corPrimaria,
+                                ),
                               ),
+                              const SizedBox(height: 5),
+                              Text(
+                                livro.nomeAutor,
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  color: corPrimaria.withOpacity(0.8),
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              const SizedBox(height: 10),
+                              Row(children: [
+                                Text(
+                                  'Sinopse',
+                                  style: TextStyle(
+                                    fontSize: 26,
+                                    color: corPrimaria,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                const Spacer(),
+                                Text(
+                                  'R\$${livro.preco.toStringAsFixed(2)}',
+                                  style: TextStyle(
+                                      fontSize: 26,
+                                      color: Colors.green[900],
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ]),
                               const SizedBox(height: 8),
                               Text(
                                 livro.sinopse,

@@ -10,7 +10,6 @@ import '../modelos/pedido.dart';
 import '../modelos/usuario.dart';
 import 'principal/perfilTela.dart';
 import 'principal/carrinhoTela.dart';
-import 'package:projeto_p1/main.dart';
 
 // Variaveis globais
 Pedido? pedido;
