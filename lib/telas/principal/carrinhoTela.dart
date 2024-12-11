@@ -147,7 +147,9 @@ class _CarrinhotelaState extends State<Carrinhotela> {
                                         // Atualiza o estado do carrinho
                                         setState(() {
                                           pedido = pedidoAtualizado;
-                                          qtdLivros = pedido!.getQuantidade();
+
+                                          qtdLivrosNotifier.value = pedido!
+                                              .getQuantidade(); // Atualiza o ValueNotifier
                                         });
                                       } catch (error) {
                                         print(
@@ -180,8 +182,10 @@ class _CarrinhotelaState extends State<Carrinhotela> {
                                         // Atualiza o estado local com os novos dados
                                         setState(() {
                                           pedido = pedidoAtualizado;
-                                          qtdLivros = pedido!.getQuantidade();
                                         });
+
+                                        qtdLivrosNotifier.value = pedido!
+                                            .getQuantidade(); // Atualiza o ValueNotifier
 
                                         print(
                                             "Livro adicionado ao carrinho com sucesso.");

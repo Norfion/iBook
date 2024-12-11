@@ -14,7 +14,8 @@ import 'principal/carrinhoTela.dart';
 // Variaveis globais
 Pedido? pedido;
 Usuario? usuario;
-int qtdLivros = pedido!.getQuantidade();
+ValueNotifier<int> qtdLivrosNotifier =
+    ValueNotifier<int>(pedido?.getQuantidade() ?? 0);
 
 class PrincipalTela extends StatefulWidget {
   const PrincipalTela({super.key});
@@ -27,7 +28,6 @@ class _PrincipalTelaState extends State<PrincipalTela> {
   double tamFonteTag = 14;
   int _selectedIndex = 0;
   bool carregando = true;
-
 
   // Lista de telas
   late List<Widget> telas;
@@ -61,6 +61,9 @@ class _PrincipalTelaState extends State<PrincipalTela> {
       setState(() {
         pedido = pedidoCarregado;
       });
+
+      qtdLivrosNotifier.value =
+          pedido?.getQuantidade() ?? 0; // Atualiza o ValueNotifier
     } catch (error) {
       print("Erro ao carregar pedido: $error");
     }
@@ -106,50 +109,62 @@ class _PrincipalTelaState extends State<PrincipalTela> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Icon(Icons.shopping_cart, color: corPrimaria),
-                if (pedido != null)
-                  Container(
-                    padding: const EdgeInsets.all(2),
-                    decoration: BoxDecoration(
-                      color: Colors.red,
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    constraints:
-                        const BoxConstraints(minWidth: 12, minHeight: 12),
-                    child: Text(
-                      '$qtdLivros',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: tamFonteTag,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
+                ValueListenableBuilder<int>(
+                  valueListenable: qtdLivrosNotifier,
+                  builder: (context, value, child) {
+                    return value > 0
+                        ? Container(
+                            padding: const EdgeInsets.all(2),
+                            decoration: BoxDecoration(
+                              color: Colors.red,
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            constraints: const BoxConstraints(
+                                minWidth: 12, minHeight: 12),
+                            child: Text(
+                              '$value',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: tamFonteTag,
+                                fontWeight: FontWeight.bold,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          )
+                        : const SizedBox(); // Esconde o badge se o valor for 0
+                  },
+                ),
               ],
             ),
             activeIcon: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Icon(Icons.shopping_cart, color: corTerciaria),
-                if (pedido != null)
-                  Container(
-                    padding: const EdgeInsets.all(2),
-                    decoration: BoxDecoration(
-                      color: Colors.red,
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    constraints:
-                        const BoxConstraints(minWidth: 12, minHeight: 12),
-                    child: Text(
-                      '$qtdLivros',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: tamFonteTag,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
+                ValueListenableBuilder<int>(
+                  valueListenable: qtdLivrosNotifier,
+                  builder: (context, value, child) {
+                    return value > 0
+                        ? Container(
+                            padding: const EdgeInsets.all(2),
+                            decoration: BoxDecoration(
+                              color: Colors.red,
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            constraints: const BoxConstraints(
+                                minWidth: 12, minHeight: 12),
+                            child: Text(
+                              '$value',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: tamFonteTag,
+                                fontWeight: FontWeight.bold,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          )
+                        : const SizedBox(); // Esconde o badge se o valor for 0
+                  },
+                ),
               ],
             ),
             label: 'Carrinho',

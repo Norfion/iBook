@@ -6,8 +6,13 @@ class Pedido {
   String id;
   List<Item> itens;
   String uidUsuario;
+  String situacao;
 
-  Pedido({required this.id, required this.itens, required this.uidUsuario});
+  Pedido(
+      {required this.id,
+      required this.itens,
+      required this.uidUsuario,
+      required this.situacao});
 
   double getValorTotal() {
     double total = 0.0;
@@ -45,7 +50,8 @@ class Pedido {
       return Pedido(
           id: documento.id,
           itens: itens,
-          uidUsuario: documento['uidUsuario'] ?? '');
+          uidUsuario: documento['uidUsuario'] ?? '',
+          situacao: documento['situacao'] ?? '');
     } catch (error) {
       print('Erro ao criar pedido: $error');
       return null;

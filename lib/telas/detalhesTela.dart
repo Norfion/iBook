@@ -88,6 +88,10 @@ class DetalhesTela extends StatelessWidget {
                                       pedido = await PedidoControlador()
                                           .getPedido(pedido!.uidUsuario);
 
+                                      qtdLivrosNotifier.value =
+                                          pedido?.getQuantidade() ??
+                                              0; // Atualiza o ValueNotifier F
+
                                       // Exibe os itens do pedido atualizado (para testes)
                                       print(
                                           'Livros do pedido DEPOIS de adicionar: ');

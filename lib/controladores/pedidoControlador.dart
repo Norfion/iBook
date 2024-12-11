@@ -18,6 +18,7 @@ class PedidoControlador {
       QuerySnapshot consulta = await firestore
           .collection('pedidos')
           .where('uidUsuario', isEqualTo: uidUsuario)
+          .where('situacao', isEqualTo: 'Andamento')
           .limit(1)
           .get();
 
@@ -35,12 +36,14 @@ class PedidoControlador {
         return Pedido(
             id: documento.id,
             itens: itensPedido,
-            uidUsuario: documento['uidUsuario'] ?? '');
+            uidUsuario: documento['uidUsuario'] ?? '',
+            situacao: documento['situacao'] ?? '');
       } else {
         // Pedido não encontrado, criar um novo
         await firestore.collection('pedidos').add({
           'uidUsuario': uidUsuario.toString(),
-          'idItens': [] // Pedido inicia vazio
+          'idItens': [], // Pedido inicia vazio
+          'situacao': 'Andamento'
         });
 
         // Chama recursivamente para buscar o pedido criado
@@ -182,12 +185,12 @@ class PedidoControlador {
       DocumentReference documento =
           FirebaseFirestore.instance.collection('pedidos').doc(pedido.id);
 
-      // Remove o documento
-      await documento.delete();
+      // Atualiza a situacao do pedido para finalizado
+      await documento.update({'situacao': 'Finalizado'});
 
-      print("Pedido do usuário com ID ${pedido.id} removido com sucesso.");
+      print("Pedido do usuário com ID ${pedido.id} finalizado com sucesso.");
     } catch (error) {
-      print("Erro ao apagar o pedido do usuário: $error");
+      print("Erro finalizar o pedido do usuário: $error");
     }
   }
 }
