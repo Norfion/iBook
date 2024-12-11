@@ -10,6 +10,7 @@ import '../modelos/pedido.dart';
 import '../modelos/usuario.dart';
 import 'principal/perfilTela.dart';
 import 'principal/carrinhoTela.dart';
+import 'package:projeto_p1/main.dart';
 
 // Variaveis globais
 Pedido? pedido;
@@ -95,7 +96,22 @@ class _PrincipalTelaState extends State<PrincipalTela> {
     return Scaffold(
       backgroundColor: corSecundaria,
       body: carregando
-          ? const Center(child: CircularProgressIndicator())
+          ? Center(
+              child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                CircularProgressIndicator(color: corPrimaria),
+                const SizedBox(height: 30),
+                Text(
+                  'Carregando...',
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: corPrimaria,
+                  ),
+                )
+              ],
+            ))
           : telas[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
         items: [

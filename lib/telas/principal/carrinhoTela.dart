@@ -23,7 +23,7 @@ class _CarrinhotelaState extends State<Carrinhotela> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         title: Text(
-          'Resumo de compras',
+          'Seus livros',
           style: TextStyle(
             fontSize: 30,
             fontWeight: FontWeight.bold,
@@ -42,7 +42,7 @@ class _CarrinhotelaState extends State<Carrinhotela> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      'Ops! Seu carrinho está vazio',
+                      'Seu carrinho está vazio!',
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 30,
@@ -52,7 +52,7 @@ class _CarrinhotelaState extends State<Carrinhotela> {
                       ),
                     ),
                     Text(
-                      'Adicione livros ao seu carrinho para que apareçam aqui!',
+                      'Adicione livros ao seu carrinho para que apareçam aqui.',
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 18,

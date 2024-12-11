@@ -69,16 +69,23 @@ class _EntrarTelaState extends State<EntrarTela> {
                         width: (tamIcone! + 60),
                         height: (tamIcone! + 60),
                         decoration: BoxDecoration(
-                          color: corTerciaria, // Cor de fundo da moldura
+                          color: corSecundaria, // Cor de fundo da moldura
                           border: Border.all(
-                            color: corSecundaria, // Cor da borda
+                            color: corTerciaria, // Cor da borda
                             width: 4, // Largura da borda
                           ),
                           borderRadius: BorderRadius.circular(
                               20), // Define o arredondamento das bordas
                         ),
-                        child: Icon(Icons.auto_stories,
-                            size: tamIcone, color: corSecundaria)),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(50),
+                          child: Image.asset(
+                            'outros/ibook_logo.png',
+                            width: 100,
+                            height: 100,
+                            fit: BoxFit.scaleDown,
+                          ),
+                        )),
                     SizedBox(height: 30),
                     Text(
                       'iBOOK',
@@ -109,6 +116,7 @@ class _EntrarTelaState extends State<EntrarTela> {
                             ],
                           ),
                           TextFormField(
+                            cursorColor: corPrimaria,
                             controller: _ctrlEmail,
                             style: TextStyle(fontSize: 20, fontFamily: fonte),
                             decoration: InputDecoration(
@@ -124,20 +132,6 @@ class _EntrarTelaState extends State<EntrarTela> {
                                 borderSide: BorderSide(color: corPrimaria),
                               ),
                             ),
-                            validator: (email) {
-                              // Procedimento para verificar se o e-mail é válido avaliando
-                              // a composição de caracteres
-                              String padraoEmail =
-                                  r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$';
-                              RegExp regExp = RegExp(padraoEmail);
-
-                              if (email == null || email.isEmpty) {
-                                return 'Informe seu e-mail';
-                              } else if (!regExp.hasMatch(email)) {
-                                return 'E-mail inválido';
-                              }
-                              return null;
-                            },
                           ),
                           SizedBox(height: 16),
                           Row(
@@ -148,6 +142,7 @@ class _EntrarTelaState extends State<EntrarTela> {
                             ],
                           ), // Espaçamento entre os campos
                           TextFormField(
+                            cursorColor: corPrimaria,
                             obscureText: true,
                             controller: _ctrlSenha,
                             style: TextStyle(fontSize: 20, fontFamily: fonte),
@@ -164,15 +159,6 @@ class _EntrarTelaState extends State<EntrarTela> {
                                 borderSide: BorderSide(color: corPrimaria),
                               ),
                             ),
-                            validator: (senha) {
-                              if (senha == null || senha.isEmpty) {
-                                return 'Informe sua senha!';
-                              } else if (senha.length > 30) {
-                                return 'Senha inválida!';
-                              } else {
-                                return null;
-                              }
-                            },
                           ),
                           SizedBox(height: 10),
                           Row(

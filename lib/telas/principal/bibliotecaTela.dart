@@ -49,7 +49,6 @@ class _BibliotecaTelaState extends State<BibliotecaTela> {
     }
   }
 
-
   // Adicionar novos livros
   // void adicionarLivros() async {
   //   List<Livro> livrosNovos = [Livro(
@@ -147,17 +146,72 @@ class _BibliotecaTelaState extends State<BibliotecaTela> {
                   ),
                 ),
                 const SizedBox(height: 16),
-                TextField(
-                  decoration: InputDecoration(
-                    hintText: 'Pesquise o título do livro',
-                    filled: true,
-                    fillColor: corSecundaria.withOpacity(0.2),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8.0),
-                      borderSide: BorderSide.none,
-                    ),
-                    suffixIcon: Icon(Icons.search, color: corTerciaria),
-                  ),
+                Autocomplete<Livro>(
+                  optionsBuilder: (TextEditingValue textEditingValue) {
+                    if (textEditingValue.text.isEmpty) {
+                      return const Iterable<Livro>.empty();
+                    }
+                    return livros
+                        .where((livro) => livro.titulo.toLowerCase().contains(
+                              textEditingValue.text.toLowerCase(),
+                            ));
+                  },
+                  displayStringForOption: (Livro livro) => livro.titulo,
+                  fieldViewBuilder:
+                      (context, controller, focusNode, onFieldSubmitted) {
+                    return TextField(
+                      cursorColor: corPrimaria,
+                      controller: controller,
+                      focusNode: focusNode,
+                      decoration: InputDecoration(
+                        hintText: 'Pesquise o título do livro',
+                        filled: true,
+                        fillColor: corSecundaria.withOpacity(0.2),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8.0),
+                          borderSide: BorderSide.none,
+                        ),
+                        suffixIcon: Icon(Icons.search, color: corTerciaria),
+                      ),
+                    );
+                  },
+                  optionsViewBuilder: (context, onSelected, options) {
+                    return Align(
+                      alignment: Alignment.topLeft,
+                      child: Material(
+                        elevation: 4,
+                        child: Container(
+                          color: corPrimaria,
+                          width: MediaQuery.of(context).size.width - 32,
+                          child: ListView.builder(
+                            padding: EdgeInsets.zero,
+                            itemCount: options.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              final livro = options.elementAt(index);
+                              return ListTile(
+                                title: Text(
+                                  livro.titulo,
+                                  style: TextStyle(
+                                      fontFamily: fonte,
+                                      fontSize: 16,
+                                      color: corSecundaria,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                onTap: () {
+                                  onSelected(
+                                      livro); // Seleciona o livro e fecha o menu
+                                },
+                              );
+                            },
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                  onSelected: (Livro livro) {
+                    selecionarLivro(
+                        livro); // Redireciona para a tela DetalhesTela
+                  },
                 ),
                 const SizedBox(height: 16)
               ],
@@ -220,11 +274,23 @@ class _BibliotecaTelaState extends State<BibliotecaTela> {
                             ),
                           )
                         : Center(
-                            child: Text(
-                              'Nenhum livro de $generoSelecionado encontrado.',
-                              style: TextStyle(color: corPrimaria),
-                            ),
-                          ),
+                            child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              LinearProgressIndicator(
+                                  backgroundColor: corPrimaria,
+                                  color: corSecundaria),
+                              const SizedBox(height: 30),
+                              Text(
+                                'Carregando...',
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                  color: corPrimaria,
+                                ),
+                              )
+                            ],
+                          )),
                     const SizedBox(height: 16),
                     Text(
                       'Nossa biblioteca',
@@ -248,11 +314,24 @@ class _BibliotecaTelaState extends State<BibliotecaTela> {
                                   .toList(),
                             ),
                           )
-                        : const Center(
-                            child: Text(
-                              'Nenhum livro disponível na biblioteca.',
-                            ),
-                          ),
+                        : Center(
+                            child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              LinearProgressIndicator(
+                                  backgroundColor: corPrimaria,
+                                  color: corSecundaria),
+                              const SizedBox(height: 30),
+                              Text(
+                                'Carregando...',
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                  color: corPrimaria,
+                                ),
+                              )
+                            ],
+                          )),
                   ],
                 ),
               ),

@@ -89,8 +89,8 @@ class _CadastrarTelaState extends State<CadastrarTela> {
                     children: [
                       Text(
                         'Já tem uma conta? ',
-                        style: TextStyle(
-                            fontFamily: fonte, color: corSecundaria),
+                        style:
+                            TextStyle(fontFamily: fonte, color: corSecundaria),
                       ),
                       GestureDetector(
                         onTap: () {
@@ -127,9 +127,10 @@ class _CadastrarTelaState extends State<CadastrarTela> {
                                 ],
                               ),
                               TextFormField(
+                                cursorColor: corPrimaria,
                                 controller: _ctrlNome,
-                                style: TextStyle(
-                                    fontSize: 20, fontFamily: fonte),
+                                style:
+                                    TextStyle(fontSize: 20, fontFamily: fonte),
                                 decoration: InputDecoration(
                                   labelStyle: TextStyle(
                                       color: corPrimaria, fontFamily: fonte),
@@ -141,8 +142,7 @@ class _CadastrarTelaState extends State<CadastrarTela> {
                                   ),
                                   focusedBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(12.0),
-                                    borderSide:
-                                        BorderSide(color: corPrimaria),
+                                    borderSide: BorderSide(color: corPrimaria),
                                   ),
                                 ),
                                 validator: (nome) {
@@ -166,9 +166,10 @@ class _CadastrarTelaState extends State<CadastrarTela> {
                                 ],
                               ),
                               TextFormField(
+                                cursorColor: corPrimaria,
                                 controller: _ctrlEmail,
-                                style: TextStyle(
-                                    fontSize: 20, fontFamily: fonte),
+                                style:
+                                    TextStyle(fontSize: 20, fontFamily: fonte),
                                 decoration: InputDecoration(
                                   labelStyle: TextStyle(
                                       color: corPrimaria, fontFamily: fonte),
@@ -180,8 +181,7 @@ class _CadastrarTelaState extends State<CadastrarTela> {
                                   ),
                                   focusedBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(12.0),
-                                    borderSide:
-                                        BorderSide(color: corPrimaria),
+                                    borderSide: BorderSide(color: corPrimaria),
                                   ),
                                 ),
                                 validator: (email) {
@@ -190,7 +190,7 @@ class _CadastrarTelaState extends State<CadastrarTela> {
                                   String padraoEmail =
                                       r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$';
                                   RegExp regExp = RegExp(padraoEmail);
-              
+
                                   if (email == null || email.isEmpty) {
                                     return 'Informe seu e-mail';
                                   } else if (!regExp.hasMatch(email)) {
@@ -213,10 +213,11 @@ class _CadastrarTelaState extends State<CadastrarTela> {
                                 ],
                               ),
                               TextFormField(
+                                cursorColor: corPrimaria,
                                 obscureText: true,
                                 controller: _ctrlSenha,
-                                style: TextStyle(
-                                    fontSize: 20, fontFamily: fonte),
+                                style:
+                                    TextStyle(fontSize: 20, fontFamily: fonte),
                                 decoration: InputDecoration(
                                   labelStyle: TextStyle(
                                       color: corPrimaria, fontFamily: fonte),
@@ -228,8 +229,7 @@ class _CadastrarTelaState extends State<CadastrarTela> {
                                   ),
                                   focusedBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(12.0),
-                                    borderSide:
-                                        BorderSide(color: corPrimaria),
+                                    borderSide: BorderSide(color: corPrimaria),
                                   ),
                                 ),
                                 validator: (senha) {
@@ -275,9 +275,10 @@ class _CadastrarTelaState extends State<CadastrarTela> {
                                 ],
                               ),
                               TextFormField(
+                                cursorColor: corPrimaria,
                                 obscureText: true,
-                                style: TextStyle(
-                                    fontSize: 20, fontFamily: fonte),
+                                style:
+                                    TextStyle(fontSize: 20, fontFamily: fonte),
                                 decoration: InputDecoration(
                                   labelStyle: TextStyle(
                                       color: corPrimaria, fontFamily: fonte),
@@ -289,16 +290,14 @@ class _CadastrarTelaState extends State<CadastrarTela> {
                                   ),
                                   focusedBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(12.0),
-                                    borderSide:
-                                        BorderSide(color: corPrimaria),
+                                    borderSide: BorderSide(color: corPrimaria),
                                   ),
                                 ),
                                 validator: (senhaConfirma) {
                                   if (senhaConfirma == null ||
                                       senhaConfirma.isEmpty) {
                                     return 'Repita a senha!';
-                                  } else if (senhaConfirma !=
-                                      _ctrlSenha.text) {
+                                  } else if (senhaConfirma != _ctrlSenha.text) {
                                     return 'As senhas não coincidem';
                                   } else {
                                     return null;
@@ -314,10 +313,9 @@ class _CadastrarTelaState extends State<CadastrarTela> {
                                       _ctrlEmail.text.toString().trim();
                                   String senha =
                                       _ctrlSenha.text.toString().trim();
-              
+
                                   // Verifica se os dados inseridos são válidos
-                                  if (_vlddRegistro.currentState!
-                                      .validate()) {
+                                  if (_vlddRegistro.currentState!.validate()) {
                                     FirebaseAuth.instance
                                         .createUserWithEmailAndPassword(
                                             email: email, password: senha)
@@ -344,10 +342,8 @@ class _CadastrarTelaState extends State<CadastrarTela> {
                                               2);
                                           break;
                                         default:
-                                          mostrarSnackBar(
-                                              context,
-                                              'Erro: ${e.code.toString()}',
-                                              2);
+                                          mostrarSnackBar(context,
+                                              'Erro: ${e.code.toString()}', 2);
                                       }
                                     });
                                   }

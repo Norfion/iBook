@@ -73,7 +73,10 @@ class DetalhesTela extends StatelessWidget {
                               Text(
                                 livro.sinopse,
                                 textAlign: TextAlign.justify,
-                                style: TextStyle(color: corPrimaria),
+                                style: TextStyle(
+                                    color: corPrimaria,
+                                    fontSize: 16,
+                                    fontFamily: fonte),
                               ),
                               const SizedBox(height: 16),
                               Center(

@@ -55,18 +55,18 @@ class _RedefinirsenhaViewState extends State<RedefinirsenhaView> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Row(
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                      children: [
-                  IconButton(
-                    icon: Icon(Icons.arrow_back_ios),
-                    color: corSecundaria,
-                    iconSize: 40, // Seta de voltar
-                    onPressed: () {
-                      Navigator.pop(context); // Retorna à tela anterior
-                    },
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      IconButton(
+                        icon: Icon(Icons.arrow_back_ios),
+                        color: corSecundaria,
+                        iconSize: 40, // Seta de voltar
+                        onPressed: () {
+                          Navigator.pop(context); // Retorna à tela anterior
+                        },
+                      ),
+                    ],
                   ),
-                                      ],
-                                    ),
                   SizedBox(height: 150),
                   Text(
                     'Esqueceu sua senha?',
@@ -99,6 +99,7 @@ class _RedefinirsenhaViewState extends State<RedefinirsenhaView> {
                           ],
                         ),
                         TextFormField(
+                          cursorColor: corPrimaria,
                           controller: _ctrlEmail,
                           style: TextStyle(fontSize: 20),
                           decoration: InputDecoration(
@@ -138,7 +139,8 @@ class _RedefinirsenhaViewState extends State<RedefinirsenhaView> {
                               FirebaseAuth.instance.sendPasswordResetEmail(
                                 email: email,
                               );
-                              mostrarSnackBar(context, 'E-mail enviado com sucesso!', 2);
+                              mostrarSnackBar(
+                                  context, 'E-mail enviado com sucesso!', 2);
 
                               Navigator.pop(context);
                             }

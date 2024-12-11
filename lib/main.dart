@@ -9,11 +9,10 @@ import 'telas/autenticacao/entrarTela.dart';
 
 // Variaveis globais
 var fonte = 'Roboto';
-var corPrimaria = const Color.fromRGBO(61, 66, 60, 1.0);
-var corSecundaria = const Color.fromRGBO(244, 244, 252, 1.0);
-var corTerciaria = const Color.fromRGBO(236, 84, 84, 1.0);
+Color corPrimaria = const Color.fromRGBO(61, 66, 60, 1.0);
+Color corSecundaria = const Color.fromRGBO(244, 244, 252, 1.0);
+Color corTerciaria = const Color.fromRGBO(236, 84, 84, 1.0);
 double? espacoEntreCampos = 10;
-
 
 Future<void> main() async {
   await Firebase.initializeApp(
@@ -34,6 +33,12 @@ class _MainAppState extends State<MainApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: ThemeData(
+        textSelectionTheme: TextSelectionThemeData(
+          selectionColor:
+              corTerciaria.withOpacity(0.5), // Cor do fundo ao selecionar texto
+        ),
+      ),
       debugShowCheckedModeBanner: false,
       initialRoute: '/login',
       routes: {
