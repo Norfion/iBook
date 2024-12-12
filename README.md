@@ -2,7 +2,7 @@
 
 Um aplicativo inovador para a compra de livros.
 
-## Alunos 👩‍🎓👨‍🎓
+## Alunos 👨‍🎓👨‍🎓
 
 ### Normando Nascimento Oliveira Meira
 **RA:** 2840482323012
